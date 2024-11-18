@@ -9,7 +9,7 @@ const VerticalScrollingAnnouncement = () => {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const response = await fetch('http://localhost:5000/announcements'); // Updated to match the API endpoint
+        const response = await fetch('https://yesj.in/announcements'); // Updated to match the API endpoint
         const data = await response.json();
         setAnnouncements(data.map(announcement => ({
           ...announcement,

@@ -23,7 +23,7 @@ const CoursesPanel = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/courses');
+      const response = await axios.get('https://yesj.in/courses');
       setCourses(response.data);
       setLoading(false);
     } catch (err) {
@@ -34,7 +34,7 @@ const CoursesPanel = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/courses/${id}`);
+      await axios.delete(`https://yesj.in/courses/${id}`);
       fetchCourses(); // Refresh the list after deletion
     } catch (err) {
       console.error('Error deleting course:', err);
@@ -51,9 +51,9 @@ const CoursesPanel = () => {
     e.preventDefault();
     try {
       if (editingCourse) {
-        await axios.put(`http://localhost:5000/courses/${editingCourse._id}`, formData);
+        await axios.put(`https://yesj.in/courses/${editingCourse._id}`, formData);
       } else {
-        await axios.post('http://localhost:5000/courses', formData);
+        await axios.post('https://yesj.in/courses', formData);
       }
       setModalOpen(false);
       fetchCourses(); // Refresh the list after submission
