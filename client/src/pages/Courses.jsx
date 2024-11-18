@@ -17,11 +17,7 @@ const Courses = () => {
     try {
       setLoading(true);
       const response = await axios.get('https://yesj.in/courses');
-      if (Array.isArray(response.data)) {
-        organizeCoursesByCategory(response.data);
-      } else {
-        setError('Invalid data format received.');
-      }
+      organizeCoursesByCategory(response.data);
       setLoading(false);
     } catch (err) {
       setError('Error fetching courses. Please try again later.');
@@ -69,7 +65,7 @@ const Courses = () => {
             {categoryData.category}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {Array.isArray(categoryData.courses) && categoryData.courses.map((course) => (
+            {categoryData.courses.map((course) => (
               <BadgeCard
                 key={course._id}
                 image={course.image}

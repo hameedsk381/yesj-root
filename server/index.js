@@ -10,7 +10,10 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+ // Start of Selection
+app.use(cors({
+  origin: ['https://yesj.in', 'https://yesj.org']
+}));
 app.use(express.json());
 
 // MongoDB connection

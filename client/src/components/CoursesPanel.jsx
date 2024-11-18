@@ -24,11 +24,7 @@ const CoursesPanel = () => {
   const fetchCourses = async () => {
     try {
       const response = await axios.get('https://yesj.in/courses');
-      if (Array.isArray(response.data)) {
-        setCourses(response.data);
-      } else {
-        setError('Invalid data format received.');
-      }
+      setCourses(response.data);
       setLoading(false);
     } catch (err) {
       setError('Error fetching courses. Please try again later.');
@@ -97,7 +93,7 @@ const CoursesPanel = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(courses) && courses.map(course => (
+          {courses.map(course => (
             <tr key={course._id}>
               <td className="border px-4 py-2">{course.title}</td>
               <td className="border px-4 py-2">{course.description}</td>
@@ -157,3 +153,4 @@ const CoursesPanel = () => {
 };
 
 export default CoursesPanel;
+
