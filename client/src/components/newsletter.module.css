@@ -1,0 +1,73 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    padding: calc(var(--mantine-spacing-xl) * 1.5);
+    border: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-8));
+   
+    background-size: cover; /* Adjust background size to cover the whole container */
+    background-attachment: fixed; /* Add parallax effect */
+    filter: brightness(1.0);
+    @media (max-width: $mantine-breakpoint-sm) {
+      flex-direction: column-reverse;
+      padding: var(--mantine-spacing-xl);
+    }
+  }
+  
+  .image {
+    max-width: 40%;
+    @media (max-width: $mantine-breakpoint-sm) {
+      max-width: 100%;
+    }
+  }
+  
+  .body {
+    padding-right: calc(var(--mantine-spacing-xl) * 4);
+    @media (max-width: $mantine-breakpoint-sm) {
+      padding-right: 0;
+      margin-top: var(--mantine-spacing-xl);
+    }
+  }
+  
+  .title {
+    color: var(--mantine-color-dark-8);
+    font-family: Greycliff CF, var(--mantine-font-family);
+    line-height: 1;
+    margin-bottom: var(--mantine-spacing-md);
+  }
+  
+  .controls {
+    display: flex;
+    margin-inline: 10px;
+  }
+  
+  .inputWrapper {
+    width: fit-content;
+    flex: 1;
+  }
+  
+  .input {
+    background-color: var(--mantine-color-white);
+    border: 2px solid var(--mantine-color-gray-4);
+    color: var(--mantine-color-dark-8);
+  
+    &::placeholder {
+      color: var(--mantine-color-gray-5);
+    }
+  
+    /* Add rainbow gradient border on focus */
+    &:focus {
+      outline: none;
+      border-image: linear-gradient(90deg, red, orange, green);
+      border-image-slice: 2;
+    }
+  }
+  
+  .control {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 10px;
+  }
+  
+  .heading {
+    color: var(--mantine-color-dark-8);
+  }

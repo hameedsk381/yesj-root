@@ -1,0 +1,86 @@
+.footer {
+  padding: 2rem 0;
+  /* background-color: #f8f9fa; */
+  background-image: url("https://salient.tailwindui.com/_next/static/media/background-faqs.55d2e36a.jpg");
+  background-size: cover;
+  background-position-y: -50px ;
+  backface-visibility: ;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.groups {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  color: #555;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.afterFooter {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  border-top: 1px solid #e9ecef;
+}
+
+.social {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Responsive styles */
+@media (min-width: 768px) {
+  .inner {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .groups {
+    justify-content: space-between;
+  }
+
+  .wrapper {
+    align-items: flex-start;
+  }
+  .afterFooter {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid #e9ecef;
+  }
+  
+}

@@ -1,0 +1,50 @@
+/* Base styles for the slider */
+.slider {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Use 100vh for full viewport height */
+    overflow: hidden;
+  }
+  
+  .slider img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.5s, transform 0.5s;
+    box-shadow: 20px 20px;
+  }
+  
+  .slider img.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Mobile styles (portrait) */
+  @media (max-width: 768px) {
+    .slider {
+      height: 30dvh; /* Use dynamic viewport height */
+    }
+    .slider img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+    }
+  }
+  
+  /* Desktop styles (landscape) */
+  @media (min-width: 769px) {
+    .slider {
+      height: 100vh; /* Use full viewport height */
+    }
+    .slider img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
+.testiminial-box{
+  background-color: red;
+}

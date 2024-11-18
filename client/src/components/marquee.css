@@ -1,0 +1,25 @@
+/* marquee.css */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+  }
+  
+  .marquee-content {
+    display: inline-flex;
+    animation: marquee 15s linear infinite;
+  }
+  
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .card {
+    flex: 0 0 auto;
+  }

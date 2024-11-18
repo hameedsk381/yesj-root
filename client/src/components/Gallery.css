@@ -1,0 +1,80 @@
+
+.tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center buttons for better aesthetics */
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: small;
+    
+  }
+  
+  .tag-buttons button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: 1px solid var(--mantine-color-blue-7);
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    text-align: center;
+    align-content: center;
+    color: var(--mantine-color-blue-7);
+}
+  
+  .tag-buttons button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+
+.gallery {
+    /* This will create a gap between columns */
+    column-gap: 16px;
+    width: 100%;
+    /* You can adjust the number of columns based on the desired layout and container width */
+    column-count: 4;
+    padding-block: 5rem;
+  }
+  
+  /* Ensures that the images do not break into multiple columns */
+  .gallery-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 16px;
+    break-inside: avoid;
+    
+  }
+  
+  /* Add responsiveness to the gallery */
+  @media (max-width: 1200px) {
+    .gallery {
+      column-count: 3;
+    }
+  }
+  
+  @media (max-width: 900px) {
+    .gallery {
+      column-count: 2;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .gallery {
+      column-count: 1;
+    }
+  }
+  
+.gallery-item:hover {
+    transform: scale(1.05);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  

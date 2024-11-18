@@ -1,0 +1,72 @@
+.header {
+    padding-top: var(--mantine-spacing-sm);
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+    position: relative;
+    z-index: 1;
+    width: 100%;
+padding-left: 5%;
+
+  }
+  
+  .mainSection {
+    padding: var(--mantine-spacing-xs);
+   
+  }
+  
+  .user {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+    border-radius: var(--mantine-radius-sm);
+    transition: background-color 100ms ease;
+  
+    &:hover {
+      background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+    }
+  
+    @media (max-width: $mantine-breakpoint-xs) {
+      display: none;
+    }
+  }
+  
+  .userActive {
+    background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+  }
+  
+  .tabsList {
+    &::before {
+      display: none;
+    }
+  
+  }
+  
+  .tab {
+    font-weight: 700;
+    font-size: large;
+    height: rem(38);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: transparent;
+    position: relative;
+    bottom: -1px;
+  margin-bottom: 10px;
+  &:hover {
+   
+    border-bottom: none;
+  }
+    &[data-active] {
+  color: red;
+      border-bottom-color: transparent;
+    }
+  }
+  .avatarContainer {
+    position: absolute;
+    top: 10px; /* Adjust as necessary to position the avatar correctly */
+
+    transform: translateX(-50%);
+    z-index: 2;
+
+   margin-left: 60px;
+   background-color: white;
+   border-radius: 100%;
+   padding: 0.5%;
+   
+  }
