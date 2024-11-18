@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
  // Start of Selection
 app.use(cors({
-  origin: ['https://yesj.in', 'https://yesj.org']
+  origin: '*'
 }));
 app.use(express.json());
 
