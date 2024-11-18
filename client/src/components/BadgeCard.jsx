@@ -26,7 +26,7 @@ export function BadgeCard({ image, title,  description, badges, duration , cours
       </Card.Section>
 
       <Group mt="xs">
-        <Button variant='gradient' bg={'red'} radius="md" style={{ flex: 1 }}>
+        <Button >
           <CourseDetailsModal title={title} description={description} duration={duration} courselink={courselink} />
         </Button>
       </Group>
