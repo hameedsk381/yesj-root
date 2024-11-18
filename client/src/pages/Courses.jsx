@@ -16,7 +16,7 @@ const Courses = () => {
   const fetchCourses = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('https://yesj.in/courses');
+      const response = await axios.get('https://server.yesj.in/courses');
       organizeCoursesByCategory(response.data);
       setLoading(false);
     } catch (err) {

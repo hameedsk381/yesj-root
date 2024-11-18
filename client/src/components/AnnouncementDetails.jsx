@@ -15,7 +15,7 @@ export default function AnnouncementDetails() {
   const fetchAnnouncementById = async (announcementId) => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://yesj.in/announcements/${announcementId}`);
+      const response = await axios.get(`https://server.yesj.in/announcements/${announcementId}`);
       setAnnouncement(response.data);
       setLoading(false);
     } catch (err) {

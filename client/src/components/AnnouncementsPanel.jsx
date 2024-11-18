@@ -21,7 +21,7 @@ export default function AnnouncementPanel() {
   const fetchAnnouncements = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("https://yesj.in/announcements");
+      const response = await axios.get("https://server.yesj.in/announcements");
       setAnnouncements(response.data);
       setLoading(false);
     } catch (error) {
@@ -71,7 +71,7 @@ export default function AnnouncementPanel() {
 
   const createAnnouncement = async () => {
     try {
-      await axios.post("https://yesj.in/announcements", newAnnouncement);
+      await axios.post("https://server.yesj.in/announcements", newAnnouncement);
       setNewAnnouncement({ title: "", description: "", content: "", links: [""] });
       fetchAnnouncements();
       closeModal();
@@ -82,7 +82,7 @@ export default function AnnouncementPanel() {
 
   const updateAnnouncement = async () => {
     try {
-      await axios.put(`https://yesj.in/announcements/${editingAnnouncement._id}`, editingAnnouncement);
+      await axios.put(`https://server.yesj.in/announcements/${editingAnnouncement._id}`, editingAnnouncement);
       setEditingAnnouncement(null);
       fetchAnnouncements();
       closeModal();
@@ -93,7 +93,7 @@ export default function AnnouncementPanel() {
 
   const deleteAnnouncement = async (id) => {
     try {
-      await axios.delete(`https://yesj.in/announcements/${id}`);
+      await axios.delete(`https://server.yesj.in/announcements/${id}`);
       fetchAnnouncements();
     } catch (error) {
       console.error("Error deleting announcement:", error);
