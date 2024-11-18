@@ -3,7 +3,7 @@ import { Card, Image, Text, Group, Badge, Button, ActionIcon } from '@mantine/co
 import classes from './BadgeCard.module.css';
 import { CourseDetailsModal } from './animated-model';
 
-export function BadgeCard({ image, title,  description, badges, duration }) {
+export function BadgeCard({ image, title,  description, badges, duration , courselink }) {
   const features = badges.map((badge) => (
     <Badge variant="light" key={badge.label} leftSection={badge.emoji}>
       {badge.label}
@@ -27,7 +27,7 @@ export function BadgeCard({ image, title,  description, badges, duration }) {
 
       <Group mt="xs">
         <Button variant='gradient' bg={'red'} radius="md" style={{ flex: 1 }}>
-          <CourseDetailsModal title={title} description={description} duration={duration} />
+          <CourseDetailsModal title={title} description={description} duration={duration} courselink={courselink} />
         </Button>
       </Group>
     </Card>

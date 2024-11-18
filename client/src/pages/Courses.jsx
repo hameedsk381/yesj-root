@@ -73,6 +73,7 @@ const Courses = () => {
                 description={course.description}
                 badges={course.badges}
                 duration={course.duration}
+                courselink={course.pageLink}
                 onClick={() => handleViewCourse(course._id)}
               />
             ))}

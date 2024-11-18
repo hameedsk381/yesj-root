@@ -31,7 +31,7 @@ export const ModalTrigger = ({ children, className }) => {
   return (
     <button
       className={cn(
-        "px-4 py-2 rounded-md text-white  transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50",
+        "px-4 py-2 rounded-md text-white transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50",
         className
       )}
       onClick={() => setOpen(true)}
