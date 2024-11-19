@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@tabler/icons-react": "^3.22.0",
-    "clsx": "^2.1.1",
-    "framer-motion": "^11.11.17",
-    "react-modal": "^3.16.1",
-    "tailwind-merge": "^2.5.4"
-  }
-}
