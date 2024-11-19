@@ -9,6 +9,7 @@ export default function AnnouncementPanel() {
     description: "",
     content: "",
     links: [""],
+    poster: "", // Added poster field
   });
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,7 @@ export default function AnnouncementPanel() {
   const createAnnouncement = async () => {
     try {
       await axios.post("https://server.yesj.in/announcements", newAnnouncement);
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""] });
+      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" }); // Reset poster field
       fetchAnnouncements();
       closeModal();
     } catch (error) {
@@ -104,7 +105,7 @@ export default function AnnouncementPanel() {
     if (announcement) {
       setEditingAnnouncement(announcement);
     } else {
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""] });
+      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" }); // Reset poster field
     }
     setModalIsOpen(true);
   };
@@ -140,6 +141,14 @@ export default function AnnouncementPanel() {
         value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
         onChange={handleInputChange}
         placeholder="Content"
+        className="border p-2 w-full my-2"
+      />
+      <input
+        type="text"
+        name="poster"
+        value={editingAnnouncement ? editingAnnouncement.poster : newAnnouncement.poster}
+        onChange={handleInputChange}
+        placeholder="Poster Link"
         className="border p-2 w-full my-2"
       />
 

@@ -11,6 +11,7 @@ router.post('/', async (req, res) => {
       description: req.body.description,
       content: req.body.content,
       links: req.body.links,
+      poster: req.body.poster, // Added poster field
     });
     const savedAnnouncement = await newAnnouncement.save();
     res.status(201).json(savedAnnouncement);
@@ -52,6 +53,7 @@ router.put('/:id', async (req, res) => {
         description: req.body.description,
         content: req.body.content,
         links: req.body.links,
+        poster: req.body.poster, // Added poster field
       },
       { new: true }
     );

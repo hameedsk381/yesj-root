@@ -20,6 +20,10 @@ const announcementSchema = new mongoose.Schema({
   links: {
     type: Array,
   },
+  poster: {
+    type: String,
+    required: false, // Not mandatory
+  },
 }, { timestamps: true });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);
