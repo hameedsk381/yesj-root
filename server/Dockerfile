@@ -17,5 +17,5 @@ RUN npm install -g nodemon
 # Expose the port the app runs on
 EXPOSE 5000
 
-# Start the server with nodemon for hot-reloading
-CMD ["nodemon", "index.js"]
+# Start the server with nodemon for development mode
+CMD ["nodemon", "index.js", "--watch", "."]  # Added --watch for hot-reloading

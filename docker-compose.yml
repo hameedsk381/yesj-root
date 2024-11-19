@@ -21,6 +21,7 @@ services:
       - '5000:5000'
     environment:
       - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
+      - NODE_ENV=development  # Set environment to development
 
   mongo:
     image: mongo
