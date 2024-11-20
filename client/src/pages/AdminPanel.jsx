@@ -61,7 +61,7 @@ export function AdminPanel() {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col m-12 p-8 md:flex-row bg-transparent dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto dark:border-neutral-700 overflow-hidden",
+        "rounded-md flex flex-col m-12 p-8 md:flex-row bg-white dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto dark:border-neutral-700 overflow-hidden",
         "h-[90vh]"
       )}>
       <Sidebar open={open} setOpen={setOpen} animate={false}>
