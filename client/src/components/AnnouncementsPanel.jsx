@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal } from '@mantine/core';
+import { Modal } from "@mantine/core";
 
 export default function AnnouncementPanel() {
   const [announcements, setAnnouncements] = useState([]);
@@ -73,7 +73,7 @@ export default function AnnouncementPanel() {
   const createAnnouncement = async () => {
     try {
       await axios.post("https://server.yesj.in/announcements", newAnnouncement);
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" }); // Reset poster field
+      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" });
       fetchAnnouncements();
       closeModal();
     } catch (error) {
@@ -105,7 +105,7 @@ export default function AnnouncementPanel() {
     if (announcement) {
       setEditingAnnouncement(announcement);
     } else {
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" }); // Reset poster field
+      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" });
     }
     setModalIsOpen(true);
   };
@@ -196,29 +196,29 @@ export default function AnnouncementPanel() {
       {loading ? (
         <p>Loading announcements...</p>
       ) : (
-        <table className="min-w-full border-collapse border border-gray-200">
+        <table className="min-w-full">
           <thead>
             <tr>
-              <th className="border border-gray-300 p-2">Title</th>
-              <th className="border border-gray-300 p-2">Description</th>
-              <th className="border border-gray-300 p-2">Actions</th>
+              <th className=" p-2">Title</th>
+              <th className=" p-2">Description</th>
+              <th className=" p-2">Actions</th>
             </tr>
           </thead>
           <tbody>
             {announcements.map((announcement) => (
-              <tr key={announcement._id} className="border border-gray-300">
-                <td className="border border-gray-300 p-2">{announcement.title}</td>
-                <td className="border border-gray-300 p-2">{announcement.description}</td>
-                <td className="border border-gray-300 p-2">
+              <tr key={announcement._id} className="border-t-2 ">
+                <td className="text-center p-2">{announcement.title}</td>
+                <td className="text-center p-2">{announcement.description}</td>
+                <td className="text-center p-2">
                   <button
                     onClick={() => openModal(announcement)}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white px-3 py-1 rounded"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteAnnouncement(announcement._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded ml-2"
+                    className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-3"
                   >
                     Delete
                   </button>
@@ -232,17 +232,13 @@ export default function AnnouncementPanel() {
   );
 
   return (
-    <div className="p-6 bg-white dark:bg-neutral-900 rounded-lg shadow-md w-full">
+    <div className="py-6 w-full">
       <h2 className="text-2xl font-semibold mb-4">Manage Announcements</h2>
-      <button onClick={() => openModal()} className="bg-blue-500 text-white px-4 py-2 mb-4 rounded">
+      <button onClick={() => openModal()} className="bg-blue-600 hover:bg-blue-900 text-white px-4 py-2 mb-4 rounded">
         Create New Announcement
       </button>
       {renderAnnouncements()}
-      <Modal
-        opened={modalIsOpen}
-        onClose={closeModal}
-        title="Announcement Form"
-      >
+      <Modal opened={modalIsOpen} onClose={closeModal} title="Announcement Form">
         {renderForm()}
       </Modal>
     </div>
