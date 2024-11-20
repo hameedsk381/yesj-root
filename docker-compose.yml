@@ -1,42 +1,40 @@
-version: '3'
+# File Path: docker-compose.yml
+
+version: '3.8'
+
 services:
-  client:
-    build: ./client
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+  server:
+    build:
+      context: ./server
     ports:
-      - '3000:80'
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "5000:5000"
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - server
-
-  server:
-    build: ./server
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    ports:
-      - '5000:5000'
-    environment:
-      - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
-      - NODE_ENV=development  # Set environment to development
+    env_file:
+      - .env
 
   mongo:
-    image: mongo
+    image: mongo:5
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
-      - mongo_data:/data/db
-
-  mongo-express:
-    image: mongo-express
-    ports:
-      - '8081:8081'
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_PORT=27017
+      - mongo-data:/data/db
 
 volumes:
-  mongo_data:
+  mongo-data:

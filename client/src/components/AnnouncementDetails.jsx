@@ -45,7 +45,7 @@ export default function AnnouncementDetails() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-8">
+    <div className="max-w-4xl mx-auto p-4 sm:p-8 ">
       <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
         <div className="p-6 md:p-10 flex-1">
         <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" style={{margin:'auto'}} />
@@ -53,7 +53,7 @@ export default function AnnouncementDetails() {
           <h2 className="text-2xl md:text-3xl text-center font-bold text-gray-900 dark:text-white mb-4">{announcement.title}</h2>
           <div className="mb-6 text-gray-600 dark:text-neutral-400">
             {/* <p className="text-lg mb-2">{announcement.description}</p> */}
-            <p className="text-xl">
+            <p className="text-lg">
            
               {announcement.content}
             </p>

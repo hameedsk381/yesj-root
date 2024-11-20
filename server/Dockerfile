@@ -1,21 +1,20 @@
-# Use Node.js image
-FROM node:18
+# File Path: backend/Dockerfile
 
-# Set the working directory
-WORKDIR /app
+# Base image
+FROM node:18-alpine
 
-# Install dependencies
-COPY package*.json ./
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and install dependencies
+COPY package.json ./
 RUN npm install
 
-# Copy the rest of the code
+# Copy application code
 COPY . .
 
-# Install nodemon globally
-RUN npm install -g nodemon
-
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 5000
 
-# Start the server with nodemon for development mode
-CMD ["nodemon", "index.js", "--watch", "."]  # Added --watch for hot-reloading
+# Start the server
+CMD ["npm", "start"]
