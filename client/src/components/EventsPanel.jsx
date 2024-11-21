@@ -1,9 +1,10 @@
 import React from 'react';
+import FileUploader from './FileUploader';
 
 export default function EventsPanel() {
   return (
     <div>
-      Check and manage upcoming events.
+     <FileUploader/>
     </div>
   );
 }
