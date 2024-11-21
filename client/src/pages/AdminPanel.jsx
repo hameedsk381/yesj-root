@@ -23,33 +23,25 @@ export function AdminPanel() {
     {
       label: "Announcements",
       href: "#announcements",
-      icon: (
-        <IconBell className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconBell className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
       component: <AnnouncementsPanel />,
     },
     {
       label: "Courses",
       href: "#courses",
-      icon: (
-        <IconClipboardList className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconClipboardList className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
       component: <CoursesPanel />,
     },
     {
       label: "Events",
       href: "#events",
-      icon: (
-        <IconCalendar className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconCalendar className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
       component: <EventsPanel />,
     },
     {
       label: "Logout",
       href: "/",
-      icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-      ),
+      icon: <IconArrowLeft className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
       component: <Homepage />,
     },
   ];
@@ -61,9 +53,15 @@ export function AdminPanel() {
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col m-12 p-8 md:flex-row bg-transparent dark:bg-neutral-800 w-full flex-1 max-w-7xl mx-auto dark:border-neutral-700 overflow-hidden",
+        "rounded-md flex flex-col m-12 p-8 md:flex-row bg-white w-full flex-1 max-w-7xl mx-auto border border-neutral-300 overflow-hidden",
         "h-[90vh]"
-      )}>
+      )}
+      style={{
+        backgroundRepeat: "no-repeat",
+        backgroundSize:"cover",
+        backgroundImage: `url('https://img.freepik.com/free-photo/composition-bright-paper-origami_23-2148120224.jpg?t=st=1732087978~exp=1732091578~hmac=9ea165acd61dcd1c677456c702d55302370bf16f64158bdc6f85f4cb131045ab&w=1060')`,
+      }}
+    >
       <Sidebar open={open} setOpen={setOpen} animate={false}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
@@ -78,9 +76,11 @@ export function AdminPanel() {
                       className="h-7 w-7 flex-shrink-0 rounded-full"
                       width={50}
                       height={50}
-                      alt="Avatar" />
+                      alt="Avatar"
+                    />
                   ),
-                }} />
+                }}
+              />
             </div>
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
@@ -96,9 +96,11 @@ export function AdminPanel() {
       </Sidebar>
       <div className="flex flex-1 p-4">
         <div className="flex flex-col w-full">
-          <h2 className="text-lg font-semibold">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</h2>
+          <h2 className="text-lg font-semibold">
+            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+          </h2>
           <div className="mt-4">
-            {links.find(link => link.label.toLowerCase() === activeTab)?.component}
+            {links.find((link) => link.label.toLowerCase() === activeTab)?.component}
           </div>
         </div>
       </div>
@@ -110,13 +112,16 @@ export const Logo = () => {
   return (
     <a
       href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
       <div
-        className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+        className="h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0"
+      />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre">
+        className="font-medium text-black whitespace-pre"
+      >
         Acet Labs
       </motion.span>
     </a>
@@ -127,9 +132,9 @@ export const LogoIcon = () => {
   return (
     <a
       href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-      <div
-        className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
     </a>
   );
 };
@@ -139,10 +144,14 @@ const Dashboard = () => {
   return (
     <div className="flex flex-1">
       <div
-        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full h-full">
+        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-300 bg-white flex flex-col gap-2 flex-1 w-full h-full"
+      >
         <h2 className="text-lg font-semibold">Admin Panel Content</h2>
         <div className="flex gap-2">
-          <p>Welcome to the Admin Panel. Here you can manage announcements, courses, and events.</p>
+          <p>
+            Welcome to the Admin Panel. Here you can manage announcements, courses,
+            and events.
+          </p>
         </div>
         <div className="flex gap-2 flex-1">
           <p>Use the sidebar to navigate through different sections.</p>

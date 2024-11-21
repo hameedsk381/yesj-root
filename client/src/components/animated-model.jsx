@@ -15,7 +15,6 @@ export function CourseDetailsModal({ title, description, duration, courselink })
         <span className="text-center text-white transition duration-500">
           View Course 
         </span>
-        
       </Button>
       <Modal
         opened={opened}

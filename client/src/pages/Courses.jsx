@@ -17,13 +17,19 @@ const Courses = () => {
     try {
       setLoading(true);
       const response = await axios.get('https://server.yesj.in/courses');
-      organizeCoursesByCategory(response.data);
-      setLoading(false);
+      if (response.data && Array.isArray(response.data)) {
+        organizeCoursesByCategory(response.data);
+      } else {
+        setError('Invalid response format from server.');
+      }
     } catch (err) {
+      console.error('Error fetching courses:', err);
       setError('Error fetching courses. Please try again later.');
+    } finally {
       setLoading(false);
     }
   };
+  
 
   const organizeCoursesByCategory = (courses) => {
     // Group courses by their category
@@ -67,15 +73,15 @@ const Courses = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {categoryData.courses.map((course) => (
               <BadgeCard
-                key={course._id}
-                image={course.image}
-                title={course.title}
-                description={course.description}
-                badges={course.badges}
-                duration={course.duration}
-                courselink={course.pageLink}
-                onClick={() => handleViewCourse(course._id)}
-              />
+              key={course._id}
+              image={course.image || 'default-image.png'}
+              title={course.title || 'No Title'}
+              description={course.description || 'No Description'}
+              badges={course.badges || []}
+              duration={course.duration || 'N/A'}
+              courselink={course.pageLink || '#'}
+              onClick={() => handleViewCourse(course._id)}
+            />
             ))}
           </div>
         </div>
