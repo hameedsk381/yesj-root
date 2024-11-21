@@ -77,26 +77,10 @@ export default function AnnouncementDetails() {
               <ul className="list-inside">
                 {announcement.links.map((link, index) => (
                   <li key={index} className="flex items-center mb-2">
-                    <svg
-                      className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13.828 14.828a4 4 0 010-5.656m1.415-1.415a6 6 0 000 8.486m3.757-3.758a8 8 0 000-11.314M21 12.01v.01M2.457 12.001A9.99 9.99 0 0112 2.457m7.071 7.071a10 10 0 01-14.142 0m4.95 4.95a10 10 0 010-14.142"
-                      />
+                    <svg className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 14.828a4 4 0 010-5.656m1.415-1.415a6 6 0 000 8.486m3.757-3.758a8 8 0 000-11.314M21 12.01v.01M2.457 12.001A9.99 9.99 0 0112 2.457m7.071 7.071a10 10 0 01-14.142 0m4.95 4.95a10 10 0 010-14.142" />
                     </svg>
-                    <a
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
-                    >
+                    <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 transition duration-300 ease-in-out">
                       {link}
                     </a>
                   </li>
