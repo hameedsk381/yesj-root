@@ -1,38 +1,41 @@
-version: '3.8'
-
+version: '3'
 services:
-  server:
-    build:
-      context: ./server
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-    env_file:
-      - .env
-    depends_on:
-      - mongo
-
   client:
-    build:
-      context: ./client
-    ports:
-      - "3000:3000"
+    build: ./client
     volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - '3000:80'
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     depends_on:
       - server
-    env_file:
-      - .env
+
+  server:
+    build: ./server
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - '5000:5000'
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
 
   mongo:
-    image: mongo:5
+    image: mongo
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - '8081:8081'
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
 
 volumes:
-  mongo-data:
+  mongo_data:
