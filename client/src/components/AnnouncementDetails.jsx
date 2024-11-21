@@ -74,7 +74,7 @@ export default function AnnouncementDetails() {
               className="rounded-lg shadow-lg w-full h-auto mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
             />
           )}
-          <div className="text-gray-700 dark:text-neutral-300 text-base sm:text-md md:text-lg lg:text-xl text-center leading-relaxed mt-4">
+          <div className="text-gray-700 dark:text-neutral-300 text-base sm:text-sm md:text-md lg:text-lg text-center px-10 leading-relaxed mt-4">
             <p>{renderContentWithLinks(announcement.content)}</p>
           </div>
           {announcement.links && announcement.links.length > 0 && (

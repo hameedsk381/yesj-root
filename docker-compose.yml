@@ -39,8 +39,7 @@ services:
 
 networks:
   default:
-    external:
-      name: web
+    external: true
 
 volumes:
   mongo_data:
