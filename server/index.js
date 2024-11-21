@@ -4,7 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import announcementRoutes from './routes/announcements.js';
 import courseRoutes from './routes/courses.js';
-import uploadRoutes from './routes/upload.js';
 dotenv.config();
 
 const app = express();
@@ -29,7 +28,6 @@ app.get('/api', (req, res) => {
 // Routes
 app.use('/announcements', announcementRoutes);
 app.use('/courses', courseRoutes);
-app.use("/upload", uploadRoutes);
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
