@@ -60,7 +60,7 @@ export default function AnnouncementDetails() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto px-6">
       <div className=" container overflow-hidden flex flex-col md:flex-row">
         <div className="p-6 md:p-10 flex-1 flex flex-col  items-center">
           {/* <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" className="mb-4" /> */}
@@ -68,7 +68,7 @@ export default function AnnouncementDetails() {
           {announcement.poster && (
             <img src={announcement.poster} alt="Announcement Poster" className="rounded-lg shadow-lg w-full h-auto mb-4" />
           )}
-          <div className="mt-12 mb-6 text-gray-600 dark:text-neutral-400 text-base sm:text-sm md:text-md lg:text-lg font-serif text-center">
+          <div className="mt-12 mb-6  text-gray-600 dark:text-neutral-400 text-base sm:text-sm md:text-md lg:text-lg font-serif text-center">
             <p>{renderContentWithLinks(announcement.content)}</p>
           </div>
           {announcement.links && announcement.links.length > 0 && (
