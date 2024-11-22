@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal } from "@mantine/core";
-import { Editor } from "react-quill"; // Importing React Quill editor
-import "react-quill/dist/quill.snow.css"; // Importing Quill styles
+import { Modal } from '@mantine/core';
+import ReactQuill from 'react-quill'; // Import Quill
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 export default function AnnouncementPanel() {
   const [announcements, setAnnouncements] = useState([]);
@@ -42,11 +42,11 @@ export default function AnnouncementPanel() {
     }
   };
 
-  const handleContentChange = (content) => {
+  const handleContentChange = (value) => {
     if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, content });
+      setEditingAnnouncement({ ...editingAnnouncement, content: value });
     } else {
-      setNewAnnouncement({ ...newAnnouncement, content });
+      setNewAnnouncement({ ...newAnnouncement, content: value });
     }
   };
 
@@ -146,11 +146,11 @@ export default function AnnouncementPanel() {
         placeholder="Description"
         className="border p-2 w-full my-2"
       />
-      <Editor
+      <ReactQuill 
         value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
         onChange={handleContentChange}
-        theme="snow"
-        style={{ height: '300px' }}
+        placeholder="Content"
+        className="border p-2 w-full my-2"
       />
       <input
         type="text"

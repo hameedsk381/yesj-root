@@ -32,7 +32,6 @@
     "@tiptap/extension-link": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
-    "@types/three": "^0.169.0",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.10",
@@ -53,6 +52,7 @@
     "react-spring": "^9.7.3",
     "react-spring-carousel": "^2.0.19",
     "react-transition-group": "^4.4.5",
+    "react-quill": "^2.0.0",
     "tailwind-merge": "^2.5.4",
     "three": "^0.169.0"
   },

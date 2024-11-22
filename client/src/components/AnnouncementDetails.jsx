@@ -44,29 +44,12 @@ export default function AnnouncementDetails() {
     return <div className="flex justify-center p-6 text-gray-500 text-lg">No announcement found.</div>;
   }
 
-  const renderContentWithLinks = (content) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const parts = content.split(urlRegex);
-    return parts.map((part, index) => {
-      if (urlRegex.test(part)) {
-        return (
-          <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline dark:text-blue-400 transition duration-300 ease-in-out">
-            {part}
-          </a>
-        );
-      }
-      return part;
-    });
-  };
-
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 font-sans">
-      <div className="container overflow-hidden flex flex-col md:flex-row bg-white dark:bg-neutral-800 rounded-lg shadow-lg transition-all">
+    <div className="max-w-5xl mx-auto">
+      <div className="container overflow-hidden flex flex-col md:flex-row">
         <div className="p-6 md:p-10 flex-1 flex flex-col items-center">
-          <Avatar src={logo1} alt="Yesj" radius="xl" size="4rem" className="mb-4" />
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-rose-600 dark:text-rose-400 mb-4 text-center leading-tight">
-            {announcement.title}
-          </h2>
+          {/* <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" className="mb-4" /> */}
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-rose-500 dark:text-white mb-4 text-center">{announcement.title}</h2>
           {announcement.poster && (
             <img
               src={announcement.poster}
@@ -74,8 +57,8 @@ export default function AnnouncementDetails() {
               className="rounded-lg shadow-lg w-full h-auto mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
             />
           )}
-          <div className="text-gray-700 dark:text-neutral-300 text-base sm:text-sm md:text-md lg:text-lg text-center px-10 leading-relaxed mt-4">
-            <p>{renderContentWithLinks(announcement.content)}</p>
+          <div className="mt-12 mb-6 text-gray-600 dark:text-neutral-400 text-base sm:text-sm md:text-md lg:text-lg font-serif text-center">
+            <div dangerouslySetInnerHTML={{ __html: announcement.content }} />
           </div>
           {announcement.links && announcement.links.length > 0 && (
             <div className="bg-gray-100 dark:bg-neutral-700 rounded-lg p-4 mt-8 w-full shadow-md">
