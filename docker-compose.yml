@@ -37,10 +37,5 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
 
-networks:
-  default:
-    external:
-      name: web
-
 volumes:
   mongo_data:

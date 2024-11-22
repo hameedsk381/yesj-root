@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal } from "@mantine/core";
+import { Editor } from "react-quill"; // Importing React Quill editor
+import "react-quill/dist/quill.snow.css"; // Importing Quill styles
 
 export default function AnnouncementPanel() {
   const [announcements, setAnnouncements] = useState([]);
   const [newAnnouncement, setNewAnnouncement] = useState({
     title: "",
     description: "",
-    content: "",
+    content: "", // Rich text content
     links: [""],
     poster: "", // Added poster field
   });
@@ -37,6 +39,14 @@ export default function AnnouncementPanel() {
       setEditingAnnouncement({ ...editingAnnouncement, [name]: value });
     } else {
       setNewAnnouncement({ ...newAnnouncement, [name]: value });
+    }
+  };
+
+  const handleContentChange = (content) => {
+    if (editingAnnouncement) {
+      setEditingAnnouncement({ ...editingAnnouncement, content });
+    } else {
+      setNewAnnouncement({ ...newAnnouncement, content });
     }
   };
 
@@ -136,12 +146,11 @@ export default function AnnouncementPanel() {
         placeholder="Description"
         className="border p-2 w-full my-2"
       />
-      <textarea
-        name="content"
+      <Editor
         value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
-        onChange={handleInputChange}
-        placeholder="Content"
-        className="border p-2 w-full my-2"
+        onChange={handleContentChange}
+        theme="snow"
+        style={{ height: '300px' }}
       />
       <input
         type="text"
