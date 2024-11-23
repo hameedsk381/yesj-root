@@ -52,7 +52,6 @@
     "react-spring": "^9.7.3",
     "react-spring-carousel": "^2.0.19",
     "react-transition-group": "^4.4.5",
-    "react-quill": "^2.0.0",
     "tailwind-merge": "^2.5.4",
     "three": "^0.169.0"
   },
