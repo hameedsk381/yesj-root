@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Avatar } from "@mantine/core";
-
+import { Avatar } from '@mantine/core';
 import { Spinner } from "./Spinner"; // Assuming you have a Spinner component
-import logo1 from "../assets/YESJ_Logo_Black.png";
+import logo1 from '../assets/YESJ_Logo_Black.png';
 
 export default function AnnouncementDetails() {
   const { id } = useParams(); // Get the announcement ID from the URL
@@ -46,23 +45,29 @@ export default function AnnouncementDetails() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-8">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row">
-        <div className="p-6 md:p-10 flex-1">
-          <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" style={{ margin: "auto" }} />
-
-          <h2 className="text-2xl md:text-3xl text-center font-bold text-gray-900 mb-4">
-            {announcement.title}
-          </h2>
-          <div className="mb-6 text-gray-600">
-            <p className="text-xl">{announcement.content}</p>
+    <div className="max-w-5xl mx-auto">
+      <div className="container overflow-hidden flex flex-col md:flex-row">
+        <div className="p-6 md:p-10 flex-1 flex flex-col items-center">
+          {/* <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" className="mb-4" /> */}
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-rose-500 dark:text-white mb-4 text-center">{announcement.title}</h2>
+          {announcement.poster && (
+            <img
+              src={announcement.poster}
+              alt="Announcement Poster"
+              className="rounded-lg shadow-lg w-full h-auto mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
+            />
+          )}
+          <div className="mt-12 mb-6 text-gray-600 dark:text-neutral-400 text-base sm:text-sm md:text-md lg:text-lg font-serif text-center">
+            <div dangerouslySetInnerHTML={{ __html: announcement.content }} />
           </div>
           {announcement.links && announcement.links.length > 0 && (
-            <div className="bg-gray-100 rounded-lg p-4 mt-8">
-              <h4 className="text-lg font-semibold text-gray-800 mb-2">Related Links</h4>
-              <ul className="list-inside">
+            <div className="bg-gray-100 dark:bg-neutral-700 rounded-lg p-4 mt-8 w-full shadow-md">
+              <h4 className="text-lg font-semibold text-gray-800 dark:text-neutral-100 mb-3">
+                Related Links
+              </h4>
+              <ul className="list-inside space-y-3">
                 {announcement.links.map((link, index) => (
-                  <li key={index} className="flex items-center mb-2">
+                  <li key={index} className="flex items-center">
                     <svg
                       className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0"
                       xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +86,7 @@ export default function AnnouncementDetails() {
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 transition duration-300 ease-in-out"
+                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline transition duration-300 ease-in-out"
                     >
                       {link}
                     </a>
@@ -91,18 +96,9 @@ export default function AnnouncementDetails() {
             </div>
           )}
         </div>
-        <div className="w-full md:w-1/3 p-6">
-          {announcement.poster && (
-            <img
-              src={announcement.poster}
-              alt="Announcement Poster"
-              className="rounded-lg shadow-lg w-full h-auto"
-            />
-          )}
-        </div>
       </div>
-      <div className="bg-gray-50 border-t border-gray-200 px-6 py-4">
-        <div className="text-gray-500 text-sm">
+      <div className="bg-gray-50 dark:bg-neutral-800 border-t border-gray-200 dark:border-neutral-700 px-6 py-4 mt-6 rounded-b-lg shadow-lg">
+        <div className="text-gray-500 dark:text-neutral-300 text-sm text-center">
           <span>Posted on: {new Date(announcement.date).toLocaleString()}</span>
         </div>
       </div>

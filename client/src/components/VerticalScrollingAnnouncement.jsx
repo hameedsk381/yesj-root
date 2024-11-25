@@ -118,7 +118,7 @@ const VerticalScrollingAnnouncement = () => {
               <p className="text-white mb-2">{announcement.title}</p>
               <p className="text-white mb-2"> {announcement.description}</p>
               <a
-                href={`/${announcement._id}`} // Assuming the first link is the main one
+                href={`announcement/${announcement._id}`} // Assuming the first link is the main one
                 className="text-yellow-300 hover:underline"
               >
                 Read More

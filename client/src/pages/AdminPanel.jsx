@@ -36,136 +36,78 @@ export function AdminPanel() {
     },
     {
       label: "Announcements",
-      path: "/admin/announcements",
+      href: "#announcements",
       icon: <IconBell className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
+      component: <AnnouncementsPanel />,
     },
     {
       label: "Courses",
-      path: "/admin/courses",
+      href: "#courses",
       icon: <IconClipboardList className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
+      component: <CoursesPanel />,
     },
     {
       label: "Events",
-      path: "/admin/events",
+      href: "#events",
       icon: <IconCalendar className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
+      component: <EventsPanel />,
     },
     {
       label: "Logout",
-      path: "/",
+      href: "/",
       icon: <IconArrowLeft className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
+      component: <Homepage />,
     },
   ];
 
   return (
     <div
       className={cn(
-        "rounded-md flex flex-col  sm:p-8 md:flex-row bg-white w-full flex-1 mx-auto border border-neutral-300 overflow-hidden",
-        "h-[100vh]"
+        "rounded-md flex flex-col m-12 p-8 md:flex-row bg-white w-full flex-1 max-w-7xl mx-auto border border-neutral-300 overflow-hidden",
+        "h-[90vh]"
       )}
       style={{
         backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundImage: `url(${background})`,
-        backgroundPositionX: "-230px",
+        backgroundSize:"cover",
+        backgroundImage: `url('https://img.freepik.com/free-photo/composition-bright-paper-origami_23-2148120224.jpg?t=st=1732087978~exp=1732091578~hmac=9ea165acd61dcd1c677456c702d55302370bf16f64158bdc6f85f4cb131045ab&w=1060')`,
       }}
     >
-      <motion.header
-        className="md:hidden sticky top-0 w-full p-3 border-b border-neutral-800 flex justify-between items-center"
-      >
-        <motion.div layout className="flex items-center gap-2">
-          <img
-            src="https://yesj.org/assets/YESJ_Logo_Black-eaf43d27.png"
-            alt="Logo"
-            className="h-10 w-10 rounded-full"
-          />
-        </motion.div>
-        <button
-          className="text-rose-800 p-2 rounded"
-          onClick={() => setNavVisible(!navVisible)} 
-        >
-          <IconMenu className="h-6 w-6" />
-        </button>
-      </motion.header>
-
-      {navVisible && (
-        <motion.nav
-          className="md:hidden fixed top-0 left-0 w-full h-full bg-white z-50 shadow-lg p-4 space-y-4"
-          initial={{ x: "-100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "-100%" }}
-          transition={{ duration: 0.3 }}
-        >
-          {links.map((link, idx) => (
-            <Link key={idx} to={link.path}>
-              <motion.button
-                layout
-                className={`flex items-center p-2 w-full text-slate-500 hover:bg-slate-100 ${
-                  location.pathname === link.path ? 'bg-rose-100 text-rose-800 font-bold' : ''
-                }`}
-                onClick={() => setNavVisible(false)} // Close nav when a tab is clicked
-              >
-                {link.icon}
-                <span className="ml-2">{link.label}</ span>
-              </motion.button>
-            </Link>
-          ))}
-        </motion.nav>
-      )}
-
-      <motion.nav
-        layout
-        className="md:sticky top-0 md:h-screen md:shrink-0 md:border-r md:border-slate-900 md:p-2 hidden md:block"
-        style={{
-          width: open ? "225px" : "fit-content",
-        }}
-      >
-        <div className="flex items-center justify-between mb-6">
-          <motion.div layout className="flex items-center gap-2">
-            <img
-              src="https://yesj.org/assets/YESJ_Logo_Black-eaf43d27.png"
-              alt="Logo"
-              className="h-10 w-10 rounded-full"
-            />
-            {open && (
-              <motion.div
-                layout
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.125 }}
-              >
-                <span className="block text-xs font-semibold">YESJ Admin</span>
-                <span className="block text-xs text-slate-500">Pro Plan</span>
-              </motion.div>
-            )}
-          </motion.div>
-          <button
-            className="ml-3 text-xs bg-rose-200 text-rose-800 hover:bg-rose-800 hover:text-white px-2 py-1 rounded"
-            onClick={() => setOpen((prev) => !prev)}
-          >
-            {open ? "Close" : "Open"}
-          </button>
-        </div>
-        <div className="space-y-2">
-          {links.map((link, idx) => (
-            <Link key={idx} to={link.path}>
-              <motion.button
-                layout
-                className={`flex items-center p-2 w-full ${
-                  location.pathname === link.path ? 'bg-rose-100 rounded text-rose-800' : ''
-                }`}
-              >
-                {link.icon}
-                {open && <span className="ml-2">{link.label}</span>}
-              </motion.button>
-            </Link>
-          ))}
-        </div>
-      </motion.nav>
-
+      <Sidebar open={open} setOpen={setOpen} animate={false}>
+        <SidebarBody className="justify-between gap-10">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+            <div>
+              <SidebarLink
+                link={{
+                  label: "Yesj",
+                  href: "#",
+                  icon: (
+                    <img
+                      src="https://yesj.org/assets/YESJ_Logo_Black-eaf43d27.png"
+                      className="h-7 w-7 flex-shrink-0 rounded-full"
+                      width={50}
+                      height={50}
+                      alt="Avatar"
+                    />
+                  ),
+                }}
+              />
+            </div>
+            <div className="mt-8 flex flex-col gap-2">
+              {links.map((link, idx) => (
+                <SidebarLink
+                  key={idx}
+                  link={link}
+                  onClick={() => handleTabChange(link.label.toLowerCase())}
+                />
+              ))}
+            </div>
+          </div>
+        </SidebarBody>
+      </Sidebar>
       <div className="flex flex-1 p-4">
         <div className="flex flex-col w-full">
           <h2 className="text-lg font-semibold">
-            {window.location.pathname.split("/").pop().charAt(0).toUpperCase() + window.location.pathname.split("/").pop().slice(1)}
+            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
           </h2>
           <div className="mt-4">
             <Routes>
@@ -180,5 +122,58 @@ export function AdminPanel() {
     </div>
   );
 }
+
+export const Logo = () => {
+  return (
+    <a
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
+      <div
+        className="h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0"
+      />
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="font-medium text-black whitespace-pre"
+      >
+        Acet Labs
+      </motion.span>
+    </a>
+  );
+};
+
+export const LogoIcon = () => {
+  return (
+    <a
+      href="#"
+      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
+    >
+      <div className="h-5 w-6 bg-black rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    </a>
+  );
+};
+
+// Dummy dashboard component with content
+const Dashboard = () => {
+  return (
+    <div className="flex flex-1">
+      <div
+        className="p-2 md:p-10 rounded-tl-2xl border border-neutral-300 bg-white flex flex-col gap-2 flex-1 w-full h-full"
+      >
+        <h2 className="text-lg font-semibold">Admin Panel Content</h2>
+        <div className="flex gap-2">
+          <p>
+            Welcome to the Admin Panel. Here you can manage announcements, courses,
+            and events.
+          </p>
+        </div>
+        <div className="flex gap-2 flex-1">
+          <p>Use the sidebar to navigate through different sections.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default AdminPanel;
