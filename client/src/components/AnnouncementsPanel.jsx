@@ -41,7 +41,9 @@ export default function AnnouncementPanel() {
   };
 
   const handleLinkChange = (index, value) => {
-    const links = editingAnnouncement ? [...editingAnnouncement.links] : [...newAnnouncement.links];
+    const links = editingAnnouncement
+      ? [...editingAnnouncement.links]
+      : [...newAnnouncement.links];
     links[index] = value;
 
     if (editingAnnouncement) {
@@ -53,14 +55,22 @@ export default function AnnouncementPanel() {
 
   const addLinkField = () => {
     if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, links: [...editingAnnouncement.links, ""] });
+      setEditingAnnouncement({
+        ...editingAnnouncement,
+        links: [...editingAnnouncement.links, ""],
+      });
     } else {
-      setNewAnnouncement({ ...newAnnouncement, links: [...newAnnouncement.links, ""] });
+      setNewAnnouncement({
+        ...newAnnouncement,
+        links: [...newAnnouncement.links, ""],
+      });
     }
   };
 
   const removeLinkField = (index) => {
-    const links = editingAnnouncement ? [...editingAnnouncement.links] : [...newAnnouncement.links];
+    const links = editingAnnouncement
+      ? [...editingAnnouncement.links]
+      : [...newAnnouncement.links];
     links.splice(index, 1);
 
     if (editingAnnouncement) {
@@ -73,7 +83,13 @@ export default function AnnouncementPanel() {
   const createAnnouncement = async () => {
     try {
       await axios.post("https://server.yesj.in/announcements", newAnnouncement);
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" });
+      setNewAnnouncement({
+        title: "",
+        description: "",
+        content: "",
+        links: [""],
+        poster: "",
+      });
       fetchAnnouncements();
       closeModal();
     } catch (error) {
@@ -83,7 +99,10 @@ export default function AnnouncementPanel() {
 
   const updateAnnouncement = async () => {
     try {
-      await axios.put(`https://server.yesj.in/announcements/${editingAnnouncement._id}`, editingAnnouncement);
+      await axios.put(
+        `https://server.yesj.in/announcements/${editingAnnouncement._id}`,
+        editingAnnouncement
+      );
       setEditingAnnouncement(null);
       fetchAnnouncements();
       closeModal();
@@ -105,7 +124,13 @@ export default function AnnouncementPanel() {
     if (announcement) {
       setEditingAnnouncement(announcement);
     } else {
-      setNewAnnouncement({ title: "", description: "", content: "", links: [""], poster: "" });
+      setNewAnnouncement({
+        title: "",
+        description: "",
+        content: "",
+        links: [""],
+        poster: "",
+      });
     }
     setModalIsOpen(true);
   };
@@ -123,7 +148,11 @@ export default function AnnouncementPanel() {
       <input
         type="text"
         name="title"
-        value={editingAnnouncement ? editingAnnouncement.title : newAnnouncement.title}
+        value={
+          editingAnnouncement
+            ? editingAnnouncement.title
+            : newAnnouncement.title
+        }
         onChange={handleInputChange}
         placeholder="Title"
         className="border p-2 w-full my-2"
@@ -131,14 +160,22 @@ export default function AnnouncementPanel() {
       <input
         type="text"
         name="description"
-        value={editingAnnouncement ? editingAnnouncement.description : newAnnouncement.description}
+        value={
+          editingAnnouncement
+            ? editingAnnouncement.description
+            : newAnnouncement.description
+        }
         onChange={handleInputChange}
         placeholder="Description"
         className="border p-2 w-full my-2"
       />
       <textarea
         name="content"
-        value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
+        value={
+          editingAnnouncement
+            ? editingAnnouncement.content
+            : newAnnouncement.content
+        }
         onChange={handleInputChange}
         placeholder="Content"
         className="border p-2 w-full my-2"
@@ -146,14 +183,21 @@ export default function AnnouncementPanel() {
       <input
         type="text"
         name="poster"
-        value={editingAnnouncement ? editingAnnouncement.poster : newAnnouncement.poster}
+        value={
+          editingAnnouncement
+            ? editingAnnouncement.poster
+            : newAnnouncement.poster
+        }
         onChange={handleInputChange}
         placeholder="Poster Link"
         className="border p-2 w-full my-2"
       />
 
       <h4 className="mt-4">Links</h4>
-      {(editingAnnouncement ? editingAnnouncement.links : newAnnouncement.links).map((link, index) => (
+      {(editingAnnouncement
+        ? editingAnnouncement.links
+        : newAnnouncement.links
+      ).map((link, index) => (
         <div key={index} className="flex items-center my-2">
           <input
             type="text"
@@ -170,7 +214,10 @@ export default function AnnouncementPanel() {
           </button>
         </div>
       ))}
-      <button onClick={addLinkField} className="bg-blue-500 text-white px-4 py-2 mt-2 rounded">
+      <button
+        onClick={addLinkField}
+        className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
+      >
         Add Link
       </button>
       <button
@@ -196,29 +243,40 @@ export default function AnnouncementPanel() {
       {loading ? (
         <p>Loading announcements...</p>
       ) : (
-        <table className="min-w-full">
-          <thead>
+        <table className="w-full table-auto border-collapse shadow-lg">
+          <thead className=" text-gray-700">
             <tr>
-              <th className=" p-2">Title</th>
-              <th className=" p-2">Description</th>
-              <th className=" p-2">Actions</th>
+              <th className="p-4 text-left text-sm font-semibold ">Title</th>
+              <th className="p-4 text-left text-sm font-semibold ">
+                Description
+              </th>
+              <th className="p-4 text-center text-sm font-semibold ">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {announcements.map((announcement) => (
-              <tr key={announcement._id} className="border-t-2 ">
-                <td className="text-center p-2">{announcement.title}</td>
-                <td className="text-center p-2">{announcement.description}</td>
-                <td className="text-center p-2">
+              <tr
+                key={announcement._id}
+                className="hover:bg-gray-50 transition duration-300 ease-in-out border-b"
+              >
+                <td className="p-4 text-sm text-gray-900">
+                  {announcement.title}
+                </td>
+                <td className="p-4 text-sm text-gray-600">
+                  {announcement.description}
+                </td>
+                <td className="p-4 text-center">
                   <button
                     onClick={() => openModal(announcement)}
-                    className="bg-yellow-500 hover:bg-yellow-700 text-white px-3 py-1 rounded"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition-all duration-200 ease-in-out transform hover:scale-105"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteAnnouncement(announcement._id)}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded ml-3"
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded ml-3 transition-all duration-200 ease-in-out transform hover:scale-105"
                   >
                     Delete
                   </button>
@@ -233,12 +291,22 @@ export default function AnnouncementPanel() {
 
   return (
     <div className="py-6 w-full">
-      <h2 className="text-2xl font-semibold mb-4">Manage Announcements</h2>
-      <button onClick={() => openModal()} className="bg-blue-600 hover:bg-blue-900 text-white px-4 py-2 mb-4 rounded">
-        Create New Announcement
-      </button>
+      <div className="flex flex-col gap-4 lg:flex-row justify-between content-center itemss-center">
+        <h2 className="text-2xl font-semibold">Manage Announcements</h2>
+        <button
+          onClick={() => openModal()}
+          className="w-fit bg-rose-200 hover:bg-rose-900 text-rose-800 font-semibold hover:text-white px-4 py-2 rounded"
+        >
+          Create New Announcement
+        </button>
+      </div>
+
       {renderAnnouncements()}
-      <Modal opened={modalIsOpen} onClose={closeModal} title="Announcement Form">
+      <Modal
+        opened={modalIsOpen}
+        onClose={closeModal}
+        title="Announcement Form"
+      >
         {renderForm()}
       </Modal>
     </div>

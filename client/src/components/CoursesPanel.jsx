@@ -84,35 +84,43 @@ const CoursesPanel = () => {
 
   return (
     <div className="container mx-auto py-6">
+      <div className="flex justify-between sm:flex-row flex-col items-center">
       <h1 className="text-2xl font-semibold mb-6">Courses</h1>
-      <Button onClick={() => setModalOpen(true)} className="mb-4">
+      <button onClick={() => setModalOpen(true)} className="w-fit bg-rose-200 hover:bg-rose-900 text-rose-800 font-semibold hover:text-white px-4 py-2 rounded">
         Add Course
-      </Button>
-      <table className="min-w-full">
-        <thead>
+      </button>
+      </div>
+      
+      <table className="min-w-full table-auto border-collapse shadow-lg">
+        <thead className="text-gray-700">
           <tr>
-            <th className=" p-2">Title</th>
-            <th className=" p-2">Description</th>
-            <th className=" p-2">Category</th>
-            <th className=" p-2">Actions</th>
+            <th className="p-3 text-left text-sm font-semibold">Title</th>
+            <th className="p-3 text-left text-sm font-semibold">Description</th>
+            <th className="p-3 text-left text-sm font-semibold">Category</th>
+            <th className="p-3 text-center text-sm font-semibold">Actions</th>
           </tr>
         </thead>
         <tbody>
           {courses.map((course) => (
-            <tr key={course._id} className="border-t-2">
-              <td className="text-center p-2">{course.title}</td>
-              <td className="text-center p-2">{course.description}</td>
-              <td className="text-center p-2">{course.category}</td>
-              <td className="text-center p-2">
+            <tr
+              key={course._id}
+              className="hover:bg-gray-50 transition duration-300 ease-in-out border-t"
+            >
+              <td className="p-2 text-sm text-gray-900">{course.title}</td>
+              <td className="p-2 text-sm text-gray-600">
+                {course.description}
+              </td>
+              <td className="p-2 text-sm text-gray-600">{course.category}</td>
+              <td className="p-2 text-center">
                 <button
                   onClick={() => handleEdit(course)}
-                  className="bg-blue-500 text-white px-4 py-1 mt-2 ml-2 rounded"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded transition-all duration-200 ease-in-out"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(course._id)}
-                  className="bg-red-500 text-white px-4 py-1 mt-2 ml-2 rounded"
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 ml-2 rounded transition-all duration-200 ease-in-out"
                 >
                   Delete
                 </button>
