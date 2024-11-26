@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Modal, Button, Image } from '@mantine/core';
 import { IconArrowRight } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
@@ -26,6 +26,7 @@ import Coursedetails from './components/Coursedetails';
 function AppWrapper() {
   const [firstVisit, setFirstVisit] = useState(false);
   const [courseModalOpened, { open: openCourseModal, close: closeCourseModal }] = useDisclosure(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const visited = sessionStorage.getItem('visited');
@@ -48,7 +49,7 @@ function AppWrapper() {
             rightSection={<IconArrowRight size={14} />}
             onClick={() => {
               setFirstVisit(false);
-              openCourseModal();
+              navigate('/courses'); // Navigate to /courses when clicked
             }}
             className="mt-4"
           >
