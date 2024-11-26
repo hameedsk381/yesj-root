@@ -8,7 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "../lib/utils";
-import { Link, Routes, Route, useLocation } from "react-router-dom";
+import { Link, Routes, Route, useLocation, Navigate } from "react-router-dom"; // Added Navigate for default route
 import background from "../assets/background-images/action-panel-background.png";
 
 // Importing individual tab components
@@ -170,11 +170,12 @@ export function AdminPanel() {
           </h2>
           <div className="mt-4">
             <Routes>
-              <Route  path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/announcements" element={<AnnouncementsPanel />} />
               <Route path="/courses" element={<CoursesPanel />} />
               <Route path="/events" element={<EventsPanel />} />
-              <Route path="/admin"element={<VanishList/>} />
+              <Route path="/admin" element={<VanishList />} />
+              <Route path="*" element={<Navigate to="/admin/dashboard" replace />} /> {/* Default route */}
             </Routes>
           </div>
         </div>
