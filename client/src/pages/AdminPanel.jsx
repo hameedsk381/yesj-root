@@ -24,9 +24,57 @@ const Dashboard = () => (
   </div>
 );
 
+const Login = ({ onLogin }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (username === "admin" && password === "amdgfeb@19") {
+      onLogin();
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
+  return (
+    <div className="flex justify-center items-center h-screen">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
+        <h2 className="text-lg font-semibold mb-4">Login</h2>
+        {error && <p className="text-red-500">{error}</p>}
+        <div className="mb-4">
+          <label className="block mb-2">Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="border rounded w-full p-2"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="border rounded w-full p-2"
+            required
+          />
+        </div>
+        <button type="submit" className="bg-rose-500 text-white px-4 py-2 rounded">
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
+
 export function AdminPanel() {
   const [open, setOpen] = useState(true);
   const [navVisible, setNavVisible] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation(); 
 
   const links = [
@@ -56,6 +104,10 @@ export function AdminPanel() {
       icon: <IconArrowLeft className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
     },
   ];
+
+  if (!isLoggedIn) {
+    return <Login onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <div
