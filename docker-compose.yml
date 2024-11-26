@@ -19,8 +19,10 @@ services:
       - /app/node_modules  # Fixed to avoid mapping issues
     ports:
       - '5000:5000'
+    env_file:
+      - .env  # Load environment variables from .env file
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
+      - MONGODB_URI  # Use the MONGODB_URI from the .env file
 
 networks:
   default:
