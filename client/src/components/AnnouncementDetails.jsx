@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Avatar } from '@mantine/core';
 import { Spinner } from "./Spinner"; // Assuming you have a Spinner component
-import logo1 from '../assets/YESJ_Logo_Black.png';
 
 export default function AnnouncementDetails() {
   const { id } = useParams(); // Get the announcement ID from the URL
@@ -48,7 +46,6 @@ export default function AnnouncementDetails() {
     <div className="max-w-5xl mx-auto">
       <div className="container overflow-hidden flex flex-col md:flex-row">
         <div className="p-6 md:p-10 flex-1 flex flex-col items-center">
-          {/* <Avatar src={logo1} alt="Yesj" radius="xl" size="3.5rem" className="mb-4" /> */}
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-rose-500 dark:text-white mb-4 text-center">{announcement.title}</h2>
           {announcement.poster && (
             <img

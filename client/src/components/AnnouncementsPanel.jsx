@@ -16,8 +16,8 @@ export default function AnnouncementPanel() {
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [errors, setErrors] = useState({}); // State for validation errors
 
-  
   useEffect(() => {
     fetchAnnouncements();
   }, []);
@@ -32,6 +32,16 @@ export default function AnnouncementPanel() {
       console.error("Error fetching announcements:", error);
       setLoading(false);
     }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!newAnnouncement.title) newErrors.title = "Title is required.";
+    if (!newAnnouncement.description) newErrors.description = "Description is required.";
+    if (!newAnnouncement.content) newErrors.content = "Content is required.";
+    if (newAnnouncement.links.some(link => link && !link.trim())) newErrors.links = "All links must be valid if provided.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
   };
 
   const handleInputChange = (e) => {
@@ -92,6 +102,8 @@ export default function AnnouncementPanel() {
   };
 
   const createAnnouncement = async () => {
+    if (!validateForm()) return; // Validate before creating
+
     try {
       await axios.post("https://server.yesj.in/announcements", newAnnouncement);
       setNewAnnouncement({
@@ -109,6 +121,8 @@ export default function AnnouncementPanel() {
   };
 
   const updateAnnouncement = async () => {
+    if (!validateForm()) return; // Validate before updating
+
     try {
       await axios.put(
         `https://server.yesj.in/announcements/${editingAnnouncement._id}`,
@@ -149,6 +163,7 @@ export default function AnnouncementPanel() {
   const closeModal = () => {
     setModalIsOpen(false);
     setEditingAnnouncement(null);
+    setErrors({}); // Clear errors on close
   };
 
   const renderForm = () => (
@@ -166,8 +181,9 @@ export default function AnnouncementPanel() {
         }
         onChange={handleInputChange}
         placeholder="Title"
-        className="border p-2 w-full my-2"
+        className={`border p-2 w-full my-2 ${errors.title ? 'border-red-500' : ''}`}
       />
+      {errors.title && <p className="text-red-500">{errors.title}</p>}
       <input
         type="text"
         name="description"
@@ -178,19 +194,20 @@ export default function AnnouncementPanel() {
         }
         onChange={handleInputChange}
         placeholder="Description"
-        className="border p-2 w-full my-2"
+        className={`border p-2 w-full my-2 ${errors.description ? 'border-red-500' : ''}`}
       />
-      <textarea
-        name="content"
+      {errors.description && <p className="text-red-500">{errors.description}</p>}
+      <ReactQuill
         value={
           editingAnnouncement
             ? editingAnnouncement.content
             : newAnnouncement.content
         }
-        onChange={handleInputChange}
+        onChange={handleContentChange}
         placeholder="Content"
-        className="border p-2 w-full my-2"
+        className={`border p-2 w-full my-2 ${errors.content ? 'border-red-500' : ''}`}
       />
+      {errors.content && <p className="text-red-500">{errors.content}</p>}
       <input
         type="text"
         name="poster"
@@ -200,11 +217,11 @@ export default function AnnouncementPanel() {
             : newAnnouncement.poster
         }
         onChange={handleInputChange}
-        placeholder="Poster Link"
-        className="border p-2 w-full my-2"
+        placeholder="Poster Link (optional)"
+        className={`border p-2 w-full my-2 ${errors.poster ? 'border-red-500' : ''}`}
       />
 
-      <h4 className="mt-4">Links</h4>
+      <h4 className="mt-4">Links (optional)</h4>
       {(editingAnnouncement
         ? editingAnnouncement.links
         : newAnnouncement.links
@@ -214,7 +231,7 @@ export default function AnnouncementPanel() {
             type="text"
             value={link}
             onChange={(e) => handleLinkChange(index, e.target.value)}
-            placeholder={`Link #${index + 1}`}
+            placeholder={`Link #${index + 1} (optional)`}
             className="border p-2 w-full"
           />
           <button
@@ -225,6 +242,7 @@ export default function AnnouncementPanel() {
           </button>
         </div>
       ))}
+      {errors.links && <p className="text-red-500">{errors.links}</p>}
       <button
         onClick={addLinkField}
         className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
