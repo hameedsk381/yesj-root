@@ -20,7 +20,11 @@ services:
     ports:
       - '5000:5000'
     environment:
-      - MONGODB_URI=mongodb://<external-mongo-host>:<external-mongo-port>/mydatabase  # Point to external MongoDB
+      - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
 
 networks:
-  default: {}
+  default:
+    external:
+      name: web
+
+volumes:
