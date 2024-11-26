@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IconArrowLeft,
   IconBell,
@@ -32,6 +32,7 @@ const Login = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username === "admin" && password === "amdgfeb@19") {
+      localStorage.setItem("isLoggedIn", "true"); // Store login state in localStorage
       onLogin();
     } else {
       setError("Invalid username or password");
@@ -74,7 +75,7 @@ const Login = ({ onLogin }) => {
 export function AdminPanel() {
   const [open, setOpen] = useState(true);
   const [navVisible, setNavVisible] = useState(false); 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem("isLoggedIn") === "true"); // Retrieve login state from localStorage
   const location = useLocation(); 
 
   const links = [
@@ -104,6 +105,11 @@ export function AdminPanel() {
       icon: <IconArrowLeft className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
     },
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn"); // Remove login state from localStorage
+    setIsLoggedIn(false);
+  };
 
   if (!isLoggedIn) {
     return <Login onLogin={() => setIsLoggedIn(true)} />;
@@ -155,10 +161,13 @@ export function AdminPanel() {
                 className={`flex items-center p-2 w-full text-slate-500 hover:bg-slate-100 ${
                   location.pathname === link.path ? 'bg-rose-100 text-rose-800 font-bold' : ''
                 }`}
-                onClick={() => setNavVisible(false)} // Close nav when a tab is clicked
+                onClick={() => {
+                  if (link.label === "Logout") handleLogout(); // Handle logout
+                  setNavVisible(false); // Close nav when a tab is clicked
+                }}
               >
                 {link.icon}
-                <span className="ml-2">{link.label}</ span>
+                <span className="ml-2">{link.label}</span>
               </motion.button>
             </Link>
           ))}
