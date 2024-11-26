@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Modal, Button, Image } from '@mantine/core';
 import { IconArrowRight } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 
 import Footer from './components/Footer';
@@ -13,7 +12,6 @@ import OurMission from './components/OurMission';
 import Programmes from './components/Programmes';
 import Contact from './components/Contact';
 import Gallery from './components/Gallery';
-import CourseRegistrationForm from './components/CourseRegistrationForm';
 import EventDetails from './components/EventDetails';
 import YesjEchos from './components/YesjEchos';
 import Contribute from './components/Contribute';
@@ -25,7 +23,6 @@ import Coursedetails from './components/Coursedetails';
 
 function AppWrapper() {
   const [firstVisit, setFirstVisit] = useState(false);
-  const [courseModalOpened, { open: openCourseModal, close: closeCourseModal }] = useDisclosure(false);
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
@@ -56,10 +53,6 @@ function AppWrapper() {
             Register for a course
           </Button>
         </div>
-      </Modal>
-
-      <Modal fullScreen opened={courseModalOpened} onClose={closeCourseModal}>
-        <CourseRegistrationForm />
       </Modal>
 
       {/* Render Header and Footer only if not on the Admin route */}
