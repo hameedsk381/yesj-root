@@ -67,7 +67,7 @@ export function BadgeCard({ image, title, description, badges, duration, coursel
           <Text fz="lg" fw={500}>
             {title}
           </Text>
-          <Text fz="xs" my="xs">
+          <Text fz="xs" my="xs" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {description}
           </Text>
         </Card.Section>

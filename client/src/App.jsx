@@ -21,6 +21,7 @@ import Courses from './pages/Courses';
 import EventPage from './pages/Events';
 import AdminPanel from './pages/AdminPanel';
 import AnnouncementDetails from './components/AnnouncementDetails';
+import Coursedetails from './components/Coursedetails';
 
 function AppWrapper() {
   const [firstVisit, setFirstVisit] = useState(false);
@@ -76,6 +77,7 @@ function AppWrapper() {
         <Route path="/contribute" element={<Contribute />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/events" element={<EventPage />} />
+        <Route path="/courses/:id" element={<Coursedetails />} />
         {/* Admin routes */}
         <Route path="/admin/*" element={<AdminPanel />} /> {/* Use /* to handle nested routes */}
       </Routes>
