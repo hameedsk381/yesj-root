@@ -4,7 +4,7 @@ services:
     build: ./client
     volumes:
       - ./client:/app
-      - /app/node_modules
+      - ./client/node_modules:/app/node_modules  # Changed to mapping
     ports:
       - '3000:80'
     environment:
@@ -16,7 +16,7 @@ services:
     build: ./server
     volumes:
       - ./server:/app
-      - /app/node_modules
+      - ./server/node_modules:/app/node_modules  # Changed to mapping
     ports:
       - '5000:5000'
     environment:
