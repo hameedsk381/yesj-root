@@ -17,6 +17,7 @@ export default function AnnouncementPanel() {
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  
   useEffect(() => {
     fetchAnnouncements();
   }, []);
@@ -179,7 +180,6 @@ export default function AnnouncementPanel() {
         placeholder="Description"
         className="border p-2 w-full my-2"
       />
-<<<<<<< HEAD
       <textarea
         name="content"
         value={
@@ -188,11 +188,6 @@ export default function AnnouncementPanel() {
             : newAnnouncement.content
         }
         onChange={handleInputChange}
-=======
-      <ReactQuill 
-        value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
-        onChange={handleContentChange}
->>>>>>> e2d040f333c41d21e17c7b563aec3bf774686420
         placeholder="Content"
         className="border p-2 w-full my-2"
       />
@@ -257,7 +252,32 @@ export default function AnnouncementPanel() {
     <div className="mt-6">
       <h3 className="text-lg font-semibold">Announcements</h3>
       {loading ? (
-        <p>Loading announcements...</p>
+        <div className="relative" style={{height:'100vh'}}>
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `url(https://img.freepik.com/free-photo/portrait-attractive-couple-denim-jackets-with-motorbike-near-big-glass-building-city-centre_613910-3737.jpg?t=st=1732554437~exp=1732558037~hmac=7155db28023147263520780cd0045b90b24eb673a54567487c5c3820af8c3b81&w=996)`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+          }}
+        />
+        <div
+          style={{ background:"white" }}
+          className="absolute inset-0 animate-pulse z-10"
+        />
+        <span
+          className="font-black absolute inset-0 z-20 text-center bg-clip-text text-transparent pointer-events-none"
+          style={{
+            backgroundImage: `url(https://img.freepik.com/free-photo/portrait-attractive-couple-denim-jackets-with-motorbike-near-big-glass-building-city-centre_613910-3737.jpg?t=st=1732554437~exp=1732558037~hmac=7155db28023147263520780cd0045b90b24eb673a54567487c5c3820af8c3b81&w=996)`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            fontSize: "clamp(3rem, 12vw, 10rem)",
+            lineHeight: '100vh',
+          }}
+        >
+          Loading...
+        </span>
+      </div>
       ) : (
         <table className="w-full table-auto border-collapse shadow-lg">
           <thead className=" text-gray-700">

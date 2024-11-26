@@ -4,7 +4,7 @@ import volunteer from "../assets/volunteer.png";
 export function NewsLetter() {
   return (
     <div
-    className="flex px-4 sm:px-20 gap-6 flex-col items-center md:flex-row"
+    className="flex bg-[#f9fafc] px-4 sm:px-20 gap-6 flex-col items-center md:flex-row"
     // style={{
     //   display: "flex",
     //   flexDirection: "column",

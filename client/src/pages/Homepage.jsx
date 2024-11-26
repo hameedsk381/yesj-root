@@ -45,7 +45,7 @@ const Homepage = () => {
     <div>
       {/* <HeroSection/> */}
       <div className="grid grid-cols-1 md:grid-cols-7 h-[82dvh] lg:my-2 lg:ml-28 bg-transparent ">
-        <div className="col-span-7 md:col-span-5 h-full">
+        <div className="col-span-7 md:col-span-5 h-full">c
           <Carouselslider />
         </div>
         <div className="col-span-7 md:col-span-2 h-full">

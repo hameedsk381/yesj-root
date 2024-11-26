@@ -23,9 +23,6 @@ function EventDetails() {
       <Section title="Mission" content={event.mission} />
       <Section title="Running of the Programs" content={event.runningOfProgram} />
       <Section title="Outcomes" content={event.outcomes} />
-
-     
-
      </div>
 
      <div className="bg-gradient-to-r from-red-500 to-blue-600 py-16">
