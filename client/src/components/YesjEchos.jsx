@@ -31,42 +31,42 @@ const YesjEchos = () => {
       title: 'ECHOES-I',
       date: '2016-08-01',
       image: echoes1,
-      pdfUrl: 'https://cloud.yesj.in/s/PCocCzBkExGMPSB'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/PCocCzBkExGMPSB'
     },
     {
       id: 2,
       title: 'ECHOES-II',
       date: '2016-12-01',
       image: echoes2,
-      pdfUrl: 'https://cloud.yesj.in/s/JsY8X8Rkn5tLAsa'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/JsY8X8Rkn5tLAsa'
     },
     {
       id: 3,
       title: 'ECHOES-III',
       date: '2017-06-01',
       image: echoes3,
-      pdfUrl: 'https://cloud.yesj.in/s/9cHHjm4X65JZbJy'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/9cHHjm4X65JZbJy'
     },
     {
       id: 4,
       title: 'ECHOES-IV',
       date: '2017-10-01',
       image: echoes4,
-      pdfUrl: 'https://cloud.yesj.in/s/25q2DY7tPdL2L8F'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/25q2DY7tPdL2L8F'
     },
     {
       id: 5,
       title: 'ECHOES-V',
       date: '2018-02-01',
       image: echoes5,
-      pdfUrl: 'https://cloud.yesj.in/s/jEdW8QX6CFT2mpJ'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/jEdW8QX6CFT2mpJ'
     },
     {
       id: 6,
       title: 'ECHOES-VI',
       date: '2018-06-01',
       image: echoes6,
-      pdfUrl: 'https://cloud.yesj.in/s/6SkwwoAjr7TfmDo'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/6SkwwoAjr7TfmDo'
     },
     // {
     //   id: 7,
@@ -87,35 +87,35 @@ const YesjEchos = () => {
       title: 'ECHOES-IX',
       date: '2023-04-01',
       image: echoes9,
-      pdfUrl: 'https://cloud.yesj.in/s/LkH5FBExNpA9e5J'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/LkH5FBExNpA9e5J'
     },
     {
       id: 10,
       title: 'ECHOES-X',
       date: '2023-07-01',
       image: echoes10,
-      pdfUrl: 'https://cloud.yesj.in/s/WjjPgsn4z6E5GTb'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/WjjPgsn4z6E5GTb'
     },
     {
       id: 11,
       title: 'ECHOES-XI',
       date: '2023-10-01',
       image: echoes11,
-      pdfUrl: 'https://cloud.yesj.in/s/PeycjmtBmBLZaFK'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/PeycjmtBmBLZaFK'
     },
     {
       id: 12,
       title: 'ECHOES-XII',
       date: '2024-01-01',
       image: echoes6,
-      pdfUrl: 'https://cloud.yesj.in/s/bL39Rt4wqPXJESM'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/bL39Rt4wqPXJESM'
     },
     {
       id: 13,
       title: 'ECHOES-XIII',
       date: '2024-04-01',
       image: echoes13,
-      pdfUrl: 'https://cloud.yesj.in/s/jxQ89BtWCJ64HoP'
+      pdfUrl: 'https://cloud.yesj.in/index.php/s/jxQ89BtWCJ64HoP'
     },
   
   ];
