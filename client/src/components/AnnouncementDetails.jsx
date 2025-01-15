@@ -43,31 +43,42 @@ export default function AnnouncementDetails() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <div className="container overflow-hidden flex flex-col md:flex-row">
-        <div className="p-6 md:p-10 flex-1 flex flex-col items-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-4 text-center">{announcement.title}</h2>
+    <div className="max-w-6xl mx-auto px-4 md:px-8 py-10">
+      <div className="bg-slate-200 border dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+        <div className="p-6">
+          {/* Title */}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 text-center">
+            {announcement.title}
+          </h1>
+
+          {/* Poster */}
           {announcement.poster && (
-            <img
-              src={announcement.poster}
-              alt="Announcement Poster"
-              className="rounded-lg shadow-lg w-[300px] h-[400px]  mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
-            />
+            <div className="mt-6 flex justify-center">
+              <img
+                src={announcement.poster}
+                alt="Announcement Poster"
+                className="rounded-lg shadow-md max-h-96 object-cover object-center"
+              />
+            </div>
           )}
+
+          {/* Content */}
           <div
-            className="mt-12 mb-6 text-black text-lg   font-thin"
+            className="mt-8 text-gray-900 dark:text-gray-300 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: announcement.content }}
           />
-         {announcement.links && announcement.links.length > 0 && (
-            <div className="bg-gray-100 dark:bg-neutral-700 rounded-lg p-4 mt-8 w-full shadow-md">
-              <h4 className="text-lg font-semibold text-gray-800 dark:text-neutral-100 mb-3">
+
+          {/* Related Links */}
+          {announcement.links && announcement.links.length > 0 && (
+            <div className="mt-10 bg-gray-50 dark:bg-gray-700 rounded-lg p-6 shadow-inner">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
                 Related Links
-              </h4>
-              <ul className="list-inside space-y-3">
+              </h2>
+              <ul className="space-y-3">
                 {announcement.links.map((link, index) => (
                   <li key={index} className="flex items-center">
                     <svg
-                      className="w-5 h-5 text-blue-500 mr-2 flex-shrink-0"
+                      className="w-5 h-5 text-blue-500 mr-3"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -84,7 +95,7 @@ export default function AnnouncementDetails() {
                       href={link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline transition duration-300 ease-in-out"
+                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline transition"
                     >
                       {link}
                     </a>
@@ -94,11 +105,12 @@ export default function AnnouncementDetails() {
             </div>
           )}
         </div>
-      </div>
- 
-      <div className="bg-gray-50 dark:bg-neutral-800 border-t border-gray-200 dark:border-neutral-700 px-6 py-4 mt-6 rounded-b-lg shadow-lg">
-        <div className="text-gray-500 dark:text-neutral-300 text-sm text-center">
-          <span>Posted on: {new Date(announcement.date).toLocaleString()}</span>
+
+        {/* Footer */}
+        <div className="bg-gray-100 dark:bg-gray-700 px-6 py-4 border-t border-gray-200 dark:border-gray-600">
+          <p className="text-center text-gray-500 dark:text-gray-300 text-sm">
+            Posted on: {new Date(announcement.date).toLocaleString()}
+          </p>
         </div>
       </div>
     </div>

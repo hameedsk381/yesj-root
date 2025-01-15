@@ -34,16 +34,19 @@ export default function AnnouncementPanel() {
       setLoading(false);
     }
   };
-
   const validateForm = () => {
+    const announcement = editingAnnouncement || newAnnouncement; // Validate based on the current announcement
     const newErrors = {};
-    if (!newAnnouncement.title) newErrors.title = "Title is required.";
-    if (!newAnnouncement.description) newErrors.description = "Description is required.";
-    if (!newAnnouncement.content) newErrors.content = "Content is required.";
-    if (newAnnouncement.links.some(link => link && !link.trim())) newErrors.links = "All links must be valid if provided.";
+    
+    if (!announcement.title) newErrors.title = "Title is required.";
+    if (!announcement.description) newErrors.description = "Description is required.";
+    if (!announcement.content) newErrors.content = "Content is required.";
+    if (announcement.links.some(link => link && !link.trim())) newErrors.links = "All links must be valid if provided.";
+    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
