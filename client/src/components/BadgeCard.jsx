@@ -59,8 +59,8 @@ export function BadgeCard({ image, title, description, badges, duration, coursel
       className="relative"
     >
       <Card withBorder radius="md" p="xl" className={classes.card} style={{ height: "400px",  }}>
-        <Card.Section style={{ height: "180px" }}>
-          <Image src={image} alt={title} height={180} className="object-cover" />
+        <Card.Section style={{ height: "200px" }}>
+          <Image src={image} alt={title} className="object-fill h-52 w-full" />
         </Card.Section>
 
         <Card.Section className={classes.section} mt="md" style={{ height: "100px" }}>
