@@ -1,22 +1,23 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal } from '@mantine/core';
-import ReactQuill from 'react-quill'; // Import Quill
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function AnnouncementPanel() {
   const [announcements, setAnnouncements] = useState([]);
   const [newAnnouncement, setNewAnnouncement] = useState({
     title: "",
     description: "",
-    content: "", // Rich text content
+    content: "",
     links: [""],
-    poster: "", // Added poster field
+    poster: "",
   });
   const [editingAnnouncement, setEditingAnnouncement] = useState(null);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [errors, setErrors] = useState({}); // State for validation errors
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     fetchAnnouncements();
@@ -27,9 +28,9 @@ export default function AnnouncementPanel() {
       setLoading(true);
       const response = await axios.get("https://server.yesj.in/announcements");
       setAnnouncements(response.data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching announcements:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -41,68 +42,46 @@ export default function AnnouncementPanel() {
     if (!newAnnouncement.content) newErrors.content = "Content is required.";
     if (newAnnouncement.links.some(link => link && !link.trim())) newErrors.links = "All links must be valid if provided.";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, [name]: value });
-    } else {
-      setNewAnnouncement({ ...newAnnouncement, [name]: value });
-    }
+    const announcement = editingAnnouncement || newAnnouncement;
+    const updatedAnnouncement = { ...announcement, [name]: value };
+    editingAnnouncement ? setEditingAnnouncement(updatedAnnouncement) : setNewAnnouncement(updatedAnnouncement);
   };
 
   const handleContentChange = (value) => {
-    if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, content: value });
-    } else {
-      setNewAnnouncement({ ...newAnnouncement, content: value });
-    }
+    const announcement = editingAnnouncement || newAnnouncement;
+    const updatedAnnouncement = { ...announcement, content: value };
+    editingAnnouncement ? setEditingAnnouncement(updatedAnnouncement) : setNewAnnouncement(updatedAnnouncement);
   };
 
   const handleLinkChange = (index, value) => {
-    const links = editingAnnouncement
-      ? [...editingAnnouncement.links]
-      : [...newAnnouncement.links];
+    const announcement = editingAnnouncement || newAnnouncement;
+    const links = [...announcement.links];
     links[index] = value;
-
-    if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, links });
-    } else {
-      setNewAnnouncement({ ...newAnnouncement, links });
-    }
+    const updatedAnnouncement = { ...announcement, links };
+    editingAnnouncement ? setEditingAnnouncement(updatedAnnouncement) : setNewAnnouncement(updatedAnnouncement);
   };
 
   const addLinkField = () => {
-    if (editingAnnouncement) {
-      setEditingAnnouncement({
-        ...editingAnnouncement,
-        links: [...editingAnnouncement.links, ""],
-      });
-    } else {
-      setNewAnnouncement({
-        ...newAnnouncement,
-        links: [...newAnnouncement.links, ""],
-      });
-    }
+    const announcement = editingAnnouncement || newAnnouncement;
+    const updatedAnnouncement = { ...announcement, links: [...announcement.links, ""] };
+    editingAnnouncement ? setEditingAnnouncement(updatedAnnouncement) : setNewAnnouncement(updatedAnnouncement);
   };
 
   const removeLinkField = (index) => {
-    const links = editingAnnouncement
-      ? [...editingAnnouncement.links]
-      : [...newAnnouncement.links];
+    const announcement = editingAnnouncement || newAnnouncement;
+    const links = [...announcement.links];
     links.splice(index, 1);
-
-    if (editingAnnouncement) {
-      setEditingAnnouncement({ ...editingAnnouncement, links });
-    } else {
-      setNewAnnouncement({ ...newAnnouncement, links });
-    }
+    const updatedAnnouncement = { ...announcement, links };
+    editingAnnouncement ? setEditingAnnouncement(updatedAnnouncement) : setNewAnnouncement(updatedAnnouncement);
   };
 
   const createAnnouncement = async () => {
-    if (!validateForm()) return; // Validate before creating
+    if (!validateForm()) return;
 
     try {
       await axios.post("https://server.yesj.in/announcements", newAnnouncement);
@@ -121,7 +100,7 @@ export default function AnnouncementPanel() {
   };
 
   const updateAnnouncement = async () => {
-    if (!validateForm()) return; // Validate before updating
+    if (!validateForm()) return;
 
     try {
       await axios.put(
@@ -163,7 +142,7 @@ export default function AnnouncementPanel() {
   const closeModal = () => {
     setModalIsOpen(false);
     setEditingAnnouncement(null);
-    setErrors({}); // Clear errors on close
+    setErrors({});
   };
 
   const renderForm = () => (
@@ -174,58 +153,68 @@ export default function AnnouncementPanel() {
       <input
         type="text"
         name="title"
-        value={
-          editingAnnouncement
-            ? editingAnnouncement.title
-            : newAnnouncement.title
-        }
+        value={editingAnnouncement ? editingAnnouncement.title : newAnnouncement.title}
         onChange={handleInputChange}
         placeholder="Title"
         className={`border p-2 w-full my-2 ${errors.title ? 'border-red-500' : ''}`}
       />
       {errors.title && <p className="text-red-500">{errors.title}</p>}
+
       <input
         type="text"
         name="description"
-        value={
-          editingAnnouncement
-            ? editingAnnouncement.description
-            : newAnnouncement.description
-        }
+        value={editingAnnouncement ? editingAnnouncement.description : newAnnouncement.description}
         onChange={handleInputChange}
         placeholder="Description"
         className={`border p-2 w-full my-2 ${errors.description ? 'border-red-500' : ''}`}
       />
       {errors.description && <p className="text-red-500">{errors.description}</p>}
+
       <ReactQuill
-        value={
-          editingAnnouncement
-            ? editingAnnouncement.content
-            : newAnnouncement.content
-        }
+        value={editingAnnouncement ? editingAnnouncement.content : newAnnouncement.content}
         onChange={handleContentChange}
+        modules={{
+          toolbar: [
+            [{ header: [1, 2, 3, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ align: [] }],
+            ["link", "image", "video"],
+            ["code-block"],
+            ["clean"],
+          ],
+        }}
+        formats={[
+          "header",
+          "bold",
+          "italic",
+          "underline",
+          "strike",
+          "list",
+          "bullet",
+          "align",
+          "link",
+          "image",
+          "video",
+          "code-block",
+        ]}
         placeholder="Content"
         className={`border p-2 w-full my-2 ${errors.content ? 'border-red-500' : ''}`}
       />
       {errors.content && <p className="text-red-500">{errors.content}</p>}
+
       <input
-        type="text"
-        name="poster"
-        value={
-          editingAnnouncement
-            ? editingAnnouncement.poster
-            : newAnnouncement.poster
-        }
-        onChange={handleInputChange}
-        placeholder="Poster Link (optional)"
-        className={`border p-2 w-full my-2 ${errors.poster ? 'border-red-500' : ''}`}
-      />
+  type="text"
+  name="poster"
+  value={editingAnnouncement ? editingAnnouncement.poster : newAnnouncement.poster}
+  onChange={handleInputChange}
+  placeholder="Poster Link (optional)"
+  className="border p-2 w-full my-2"
+/>
+
 
       <h4 className="mt-4">Links (optional)</h4>
-      {(editingAnnouncement
-        ? editingAnnouncement.links
-        : newAnnouncement.links
-      ).map((link, index) => (
+      {(editingAnnouncement?.links || newAnnouncement.links).map((link, index) => (
         <div key={index} className="flex items-center my-2">
           <input
             type="text"
@@ -242,7 +231,9 @@ export default function AnnouncementPanel() {
           </button>
         </div>
       ))}
+
       {errors.links && <p className="text-red-500">{errors.links}</p>}
+
       <button
         onClick={addLinkField}
         className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
@@ -270,43 +261,14 @@ export default function AnnouncementPanel() {
     <div className="mt-6">
       <h3 className="text-lg font-semibold">Announcements</h3>
       {loading ? (
-        <div className="relative" style={{height:'100vh'}}>
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(https://img.freepik.com/free-photo/portrait-attractive-couple-denim-jackets-with-motorbike-near-big-glass-building-city-centre_613910-3737.jpg?t=st=1732554437~exp=1732558037~hmac=7155db28023147263520780cd0045b90b24eb673a54567487c5c3820af8c3b81&w=996)`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-          }}
-        />
-        <div
-          style={{ background:"white" }}
-          className="absolute inset-0 animate-pulse z-10"
-        />
-        <span
-          className="font-black absolute inset-0 z-20 text-center bg-clip-text text-transparent pointer-events-none"
-          style={{
-            backgroundImage: `url(https://img.freepik.com/free-photo/portrait-attractive-couple-denim-jackets-with-motorbike-near-big-glass-building-city-centre_613910-3737.jpg?t=st=1732554437~exp=1732558037~hmac=7155db28023147263520780cd0045b90b24eb673a54567487c5c3820af8c3b81&w=996)`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            fontSize: "clamp(3rem, 12vw, 10rem)",
-            lineHeight: '100vh',
-          }}
-        >
-          Loading...
-        </span>
-      </div>
+        <p>Loading...</p>
       ) : (
         <table className="w-full table-auto border-collapse shadow-lg">
-          <thead className=" text-gray-700">
+          <thead className="text-gray-700">
             <tr>
-              <th className="p-4 text-left text-sm font-semibold ">Title</th>
-              <th className="p-4 text-left text-sm font-semibold ">
-                Description
-              </th>
-              <th className="p-4 text-center text-sm font-semibold ">
-                Actions
-              </th>
+              <th className="p-4 text-left text-sm font-semibold">Title</th>
+              <th className="p-4 text-left text-sm font-semibold">Description</th>
+              <th className="p-4 text-center text-sm font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -315,22 +277,18 @@ export default function AnnouncementPanel() {
                 key={announcement._id}
                 className="hover:bg-gray-50 transition duration-300 ease-in-out border-b"
               >
-                <td className="p-4 text-sm text-gray-900">
-                  {announcement.title}
-                </td>
-                <td className="p-4 text-sm text-gray-600">
-                  {announcement.description}
-                </td>
+                <td className="p-4 text-sm text-gray-900">{announcement.title}</td>
+                <td className="p-4 text-sm text-gray-600">{announcement.description}</td>
                 <td className="p-4 text-center">
                   <button
                     onClick={() => openModal(announcement)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition-all duration-200 ease-in-out transform hover:scale-105"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteAnnouncement(announcement._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded ml-3 transition-all duration-200 ease-in-out transform hover:scale-105"
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded ml-3"
                   >
                     Delete
                   </button>
@@ -345,7 +303,7 @@ export default function AnnouncementPanel() {
 
   return (
     <div className="py-6 w-full">
-      <div className="flex flex-col gap-4 lg:flex-row justify-between content-center itemss-center">
+      <div className="flex flex-col gap-4 lg:flex-row justify-between content-center items-center">
         <h2 className="text-2xl font-semibold">Manage Announcements</h2>
         <button
           onClick={() => openModal()}
@@ -359,7 +317,7 @@ export default function AnnouncementPanel() {
       <Modal
         opened={modalIsOpen}
         onClose={closeModal}
-        title="Announcement Form"
+        title="Announcement Form" 
       >
         {renderForm()}
       </Modal>

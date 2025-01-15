@@ -4,27 +4,27 @@ import axios from "axios";
 import { Spinner } from "./Spinner"; // Assuming you have a Spinner component
 
 export default function AnnouncementDetails() {
-  const { id } = useParams(); // Get the announcement ID from the URL
+  const { id } = useParams();
   const [announcement, setAnnouncement] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchAnnouncementById = async (announcementId) => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`https://server.yesj.in/announcements/${announcementId}`);
+        setAnnouncement(response.data);
+      } catch (err) {
+        console.error("Error fetching announcement:", err);
+        setError("Announcement not found or an error occurred.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchAnnouncementById(id);
   }, [id]);
-
-  const fetchAnnouncementById = async (announcementId) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`https://server.yesj.in/announcements/${announcementId}`);
-      setAnnouncement(response.data);
-    } catch (err) {
-      console.error("Error fetching announcement:", err);
-      setError("Announcement not found or an error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -46,18 +46,19 @@ export default function AnnouncementDetails() {
     <div className="max-w-5xl mx-auto">
       <div className="container overflow-hidden flex flex-col md:flex-row">
         <div className="p-6 md:p-10 flex-1 flex flex-col items-center">
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-rose-500 dark:text-white mb-4 text-center">{announcement.title}</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-black mb-4 text-center">{announcement.title}</h2>
           {announcement.poster && (
             <img
               src={announcement.poster}
               alt="Announcement Poster"
-              className="rounded-lg shadow-lg w-full h-auto mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
+              className="rounded-lg shadow-lg w-[300px] h-[400px]  mb-6 object-cover object-center transition-transform duration-300 hover:scale-105"
             />
           )}
-          <div className="mt-12 mb-6 text-gray-600 dark:text-neutral-400 text-base sm:text-sm md:text-md lg:text-lg font-serif text-center">
-            <div dangerouslySetInnerHTML={{ __html: announcement.content }} />
-          </div>
-          {announcement.links && announcement.links.length > 0 && (
+          <div
+            className="mt-12 mb-6 text-black text-lg   font-thin"
+            dangerouslySetInnerHTML={{ __html: announcement.content }}
+          />
+         {announcement.links && announcement.links.length > 0 && (
             <div className="bg-gray-100 dark:bg-neutral-700 rounded-lg p-4 mt-8 w-full shadow-md">
               <h4 className="text-lg font-semibold text-gray-800 dark:text-neutral-100 mb-3">
                 Related Links
@@ -94,6 +95,7 @@ export default function AnnouncementDetails() {
           )}
         </div>
       </div>
+ 
       <div className="bg-gray-50 dark:bg-neutral-800 border-t border-gray-200 dark:border-neutral-700 px-6 py-4 mt-6 rounded-b-lg shadow-lg">
         <div className="text-gray-500 dark:text-neutral-300 text-sm text-center">
           <span>Posted on: {new Date(announcement.date).toLocaleString()}</span>

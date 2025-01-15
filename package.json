@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "slate-history": "^0.110.3",
+    "slate-md-serializer": "^5.5.4"
+  }
+}
