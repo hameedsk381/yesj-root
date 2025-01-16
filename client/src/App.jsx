@@ -20,6 +20,7 @@ import EventPage from './pages/Events';
 import AdminPanel from './pages/AdminPanel';
 import AnnouncementDetails from './components/AnnouncementDetails';
 import Coursedetails from './components/Coursedetails';
+import Event from './components/Event';
 
 function AppWrapper() {
   const [firstVisit, setFirstVisit] = useState(false);
@@ -66,6 +67,7 @@ function AppWrapper() {
         <Route path="/contactus" element={<Contact />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="event/:id" element={<EventDetails />} />
+        <Route path="events/:id" element={<Event />} />
         <Route path="announcement/:id" element={<AnnouncementDetails />} />
         <Route path="/yesjechoes" element={<YesjEchos />} />
         <Route path="/contribute" element={<Contribute />} />

@@ -16,6 +16,7 @@ import AnnouncementsPanel from "../components/AnnouncementsPanel";
 import CoursesPanel from "../components/CoursesPanel";
 import EventsPanel from "../components/EventsPanel";
 import { VanishList } from "../components/Todo";
+import SlidesPanel from "../components/SlidesPanel";
 
 const Dashboard = () => (
   <div>
@@ -97,6 +98,11 @@ export function AdminPanel() {
     {
       label: "Events",
       path: "/admin/events",
+      icon: <IconCalendar className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
+    },
+    {
+      label: "Slides",
+      path: "/admin/slides",
       icon: <IconCalendar className="text-neutral-900 h-5 w-5 flex-shrink-0" />,
     },
     {
@@ -196,7 +202,7 @@ export function AdminPanel() {
                 transition={{ delay: 0.125 }}
               >
                 <span className="block text-xs font-semibold">YESJ Admin</span>
-                <span className="block text-xs text-slate-500">Pro Plan</span>
+               
               </motion.div>
             )}
           </motion.div>
@@ -229,13 +235,14 @@ export function AdminPanel() {
           <h2 className="text-lg font-semibold">
             {window.location.pathname.split("/").pop().charAt(0).toUpperCase() + window.location.pathname.split("/").pop().slice(1)}
           </h2>
-          <div className="mt-4">
+          <div className="mt-4 scroll-auto">
             <Routes>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/announcements" element={<AnnouncementsPanel />} />
               <Route path="/courses" element={<CoursesPanel />} />
               <Route path="/events" element={<EventsPanel />} />
               <Route path="/admin" element={<VanishList />} />
+              <Route path="/slides" element={<SlidesPanel />} />
               <Route path="*" element={<Navigate to="/admin/dashboard" replace />} /> {/* Default route */}
             </Routes>
           </div>
