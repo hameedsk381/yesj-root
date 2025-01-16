@@ -39,7 +39,7 @@ export default function SlidesPanel() {
   const fetchSlides = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/slides');
+      const response = await axios.get('https://server.yesj.in/slides');
       setSlides(response.data);
     } catch (err) {
       console.error('Error fetching slides:', err);
@@ -62,7 +62,7 @@ export default function SlidesPanel() {
   // Add a new slide
   const addSlide = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/slides', newSlide);
+      const response = await axios.post('https://server.yesj.in/slides', newSlide);
       setSlides([...slides, response.data]);
       setNewSlide({
         title: '',
@@ -82,7 +82,7 @@ export default function SlidesPanel() {
   // Update a slide
   const updateSlide = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/slides/${editingSlide._id}`, editingSlide);
+      const response = await axios.put(`https://server.yesj.in/slides/${editingSlide._id}`, editingSlide);
       setSlides(slides.map((slide) => (slide._id === editingSlide._id ? response.data : slide)));
       setEditingSlide(null);
       setModalOpen(false);
@@ -95,7 +95,7 @@ export default function SlidesPanel() {
   // Delete a slide
   const deleteSlide = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/slides/${id}`);
+      await axios.delete(`https://server.yesj.in/slides/${id}`);
       setSlides(slides.filter((slide) => slide._id !== id));
     } catch (err) {
       console.error('Error deleting slide:', err);

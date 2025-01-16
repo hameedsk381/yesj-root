@@ -29,7 +29,7 @@ export default function EventsPanel() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/events'); // Replace with your API endpoint
+      const response = await axios.get('https://server.yesj.in/events'); // Replace with your API endpoint
       setEvents(response.data);
     } catch (err) {
       console.error('Error fetching events:', err);
@@ -71,7 +71,7 @@ export default function EventsPanel() {
   // Add a new event
   const addEvent = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/events', newEvent);
+      const response = await axios.post('https://server.yesj.in/events', newEvent);
       setEvents([...events, response.data]);
       setNewEvent({
         title: '',
@@ -93,7 +93,7 @@ export default function EventsPanel() {
   // Update an event
   const updateEvent = async () => {
     try {
-      const response = await axios.put(`http://localhost:5000/events/${editingEvent._id}`, editingEvent);
+      const response = await axios.put(`https://server.yesj.in/events/${editingEvent._id}`, editingEvent);
       setEvents(events.map((event) => (event._id === editingEvent._id ? response.data : event)));
       setEditingEvent(null);
       setModalOpen(false);
@@ -106,7 +106,7 @@ export default function EventsPanel() {
   // Delete an event
   const deleteEvent = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/events/${id}`);
+      await axios.delete(`https://server.yesj.in/events/${id}`);
       setEvents(events.filter((event) => event._id !== id));
     } catch (err) {
       console.error('Error deleting event:', err);

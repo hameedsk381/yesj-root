@@ -12,7 +12,7 @@ const EventPage = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/events'); // Replace with your API endpoint
+        const response = await axios.get('https://server.yesj.in/events'); // Replace with your API endpoint
         setEvents(response.data);
       } catch (err) {
         console.error('Error fetching events:', err);

@@ -26,7 +26,7 @@ export default function EventPage() {
   // Fetch event details
   const fetchEventDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/events/${id}`); // Replace with your API endpoint
+      const response = await axios.get(`https://server.yesj.in/events/${id}`); // Replace with your API endpoint
       setEvent(response.data);
     } catch (err) {
       console.error('Error fetching event details:', err);
