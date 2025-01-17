@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Image } from '@mantine/core';
+
 const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? 1000 : -1000,
@@ -90,10 +91,14 @@ const Carouselslider = () => {
                 <Image
                   src={slide.image}
                   alt={slide.title}
+                  loading="lazy" // Lazy loading
                   className="w-full h-full object-cover lg:rounded-3xl"
                 />
-                <div className="absolute inset-1  flex flex-col justify-start items-start  text-center text-white p-6 lg:p-10">
-                  <h2 className="text-2xl md:text-4xl font-bold mb-4 bg-gray-700 p-5">{slide.title}</h2>
+                <div className="absolute right-2 bottom-1 flex flex-col justify-start items-start text-center text-white p-4 lg:p-10">
+                <div className='bg-black rounded-lg bg-opacity-60'>
+  <h2 className="text-2xl md:text-4xl font-extrabold mb-4 p-3 text-white">{slide.title}</h2>
+</div>
+
                   {/* <p className="text-lg md:text-xl mb-6">{slide.description}</p> */}
                   {slide.link && (
                     <a
