@@ -32,6 +32,35 @@ app.use('/announcements', announcementRoutes);
 app.use('/courses', courseRoutes);
 app.use('/events', eventRoutes);
 app.use('/slides', carouselRoutes);
+
+// Endpoint to list images from the MinIO bucket
+app.get('/images', (req, res) => {
+  const bucketName = 'yesj-website'; // Replace with your bucket name
+  const prefix = ''; // If you have a specific folder, replace with its name
+
+  let images = [];
+
+  // List objects in the specified bucket
+  minioClient.listObjects(bucketName, prefix, true, (err, dataStream) => {
+    if (err) {
+      return res.status(500).send('Failed to fetch images from MinIO');
+    }
+
+    dataStream.on('data', (obj) => {
+      // Add image URLs to the images array
+      images.push(`https://minio.yesj.in/${bucketName}/${obj.name}`);
+    });
+
+    dataStream.on('end', () => {
+      res.json(images);
+    });
+
+    dataStream.on('error', (err) => {
+      console.error(err);
+      res.status(500).send('Error fetching images');
+    });
+  });
+})
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
