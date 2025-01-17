@@ -28,23 +28,17 @@ import {
 import HeroSection from "../components/HeroSection";
 import ImpactMetrics from "../components/InputMetrics";
 import ServicesOverview from "../components/ServicesOverview";
-import DynamicProgrammes from "../components/DynamicProgrammes";
 import DonorRecognition from "../components/DonorRecognition";
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import GetInvolved from "../components/GetInvolved";
 import SuccessStories from "../components/SuccessStories";
-import ContactSection from "../components/ContactSection";
-import Chatbot from "../components/Chatbot";
 import VerticalScrollingAnnouncement from "../components/VerticalScrollingAnnouncement";
 import { CardSpotlight } from "../components/card-spotlight";
-import SplineBackground from "../components/SplineBackground";
 // import CardsCarousel from '../components/Carousel'
 
 const Homepage = () => {
   return (
     <div>
       {/* <HeroSection/> */}
-      <div className="grid grid-cols-1 md:grid-cols-7 h-[82dvh] lg:my-2 lg:ml-28 bg-transparent ">
+      <div className="grid grid-cols-1 md:grid-cols-7 h-[82dvh] lg:mb-2  bg-transparent ">
         <div className="col-span-7 md:col-span-5 h-full">
           <Carouselslider />
         </div>

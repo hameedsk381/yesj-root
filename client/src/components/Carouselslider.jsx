@@ -37,6 +37,9 @@ const Carouselslider = () => {
           description: slide.description, // Optional description for the image
           link: slide.link, // Optional button/link
         }));
+
+        // Cache the slides in localStorage
+        localStorage.setItem('carouselSlides', JSON.stringify(formattedSlides));
         setSlides(formattedSlides);
       } catch (err) {
         console.error('Error fetching slides:', err);
@@ -46,13 +49,20 @@ const Carouselslider = () => {
       }
     };
 
-    fetchImages();
+    // Try to load from localStorage first
+    const cachedSlides = localStorage.getItem('carouselSlides');
+    if (cachedSlides) {
+      setSlides(JSON.parse(cachedSlides));
+      setLoading(false);
+    } else {
+      fetchImages();
+    }
   }, []);
 
   useEffect(() => {
     const autoplay = setInterval(() => {
       setCurrent(([prev]) => [(prev + 1) % slides.length, 1]);
-    }, 5000); // Change slide every 5 seconds
+    }, 9000); // Change slide every 5 seconds
 
     return () => clearInterval(autoplay);
   }, [slides]);
@@ -91,15 +101,15 @@ const Carouselslider = () => {
                 <Image
                   src={slide.image}
                   alt={slide.title}
-                  loading="lazy" // Lazy loading
-                  className="w-full h-full object-cover lg:rounded-3xl"
+                  loading="lazy" // Lazy loading of images
+                  className="w-full h-full object-cover "
                 />
+                
+     
                 <div className="absolute right-2 bottom-1 flex flex-col justify-start items-start text-center text-white p-4 lg:p-10">
-                <div className='bg-black rounded-lg bg-opacity-70'>
-  <h2 className="text-2xl md:text-4xl font-bold  p-3 text-white">{slide.title}</h2>
-</div>
-
-                  {/* <p className="text-lg md:text-xl mb-6">{slide.description}</p> */}
+                  <div className='bg-black rounded-lg bg-opacity-70'>
+                    <h2 className="text-2xl md:text-4xl font-bold p-3 text-white">{slide.title}</h2>
+                  </div>
                   {slide.link && (
                     <a
                       href={slide.link}

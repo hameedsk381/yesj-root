@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { Button } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
+import { IconArrowBack } from "@tabler/icons-react";
 
 const Coursedetails = () => {
   const { id } = useParams();
@@ -33,15 +34,16 @@ const Coursedetails = () => {
   }
 
   return (
-    <div className="container mx-auto py-6">
+    <Container className=" mx-auto my-10">
+            <Button  onClick={() => window.history.back()} className="my-6">Back to Courses</Button>
+
       <h1 className="text-2xl font-semibold mb-4">{course.title}</h1>
       <p className="text-gray-600 mb-2"><strong>Description:</strong> {course.description}</p>
       <p className="text-gray-600 mb-2"><strong>Category:</strong> {course.category}</p>
       <p className="text-gray-600 mb-2"><strong>Duration:</strong> {course.duration}</p>
       <p className="text-gray-600 mb-2"><strong>Page Link:</strong> <a href={course.pageLink} target="_blank" rel="noopener noreferrer">{course.pageLink}</a></p>
       <img src={course.image} alt={course.title} className="w-full h-auto mb-4" />
-      <Button onClick={() => window.history.back()} className="mt-4">Back to Courses</Button>
-    </div>
+    </Container>
   );
 };
 
