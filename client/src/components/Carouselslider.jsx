@@ -95,8 +95,8 @@ const Carouselslider = () => {
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute right-2 bottom-1 flex flex-col justify-start items-start text-center text-white p-4 lg:p-10">
-                  <div className="bg-black rounded-lg bg-opacity-70">
-                    <h2 className="text-2xl md:text-4xl font-bold p-3 text-white">{slide.title}</h2>
+                  <div className="bg-red-600 rounded-lg bg-opacity-60">
+                    <h4 className="text-xl md:text-2xl font-bold p-3 text-white">{slide.title}</h4>
                   </div>
                   {slide.link && (
                     <a
