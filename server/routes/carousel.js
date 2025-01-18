@@ -1,30 +1,103 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import Carousel from '../models/carousel.js';
+import multer from 'multer';
+import path from 'path';
+import * as Minio from 'minio'
 
 const router = express.Router();
 
-// Create a new carousel item
-router.post('/', async (req, res) => {
-  const { title, description, imageUrl, link, active, order } = req.body;
+// MinIO client configuration
+const minioClient = new Minio.Client({
+  endPoint: 'minio.yesj.in', // e.g., 'localhost'
+  port: 9000, // Default MinIO port
+  useSSL: false, // Set to true if SSL is enabled
+  accessKey: 'yesj',
+  secretKey: 'amdgfeb@19',
+});
+
+// Bucket name for storing images
+const bucketName = 'carousel-images';
+
+// Check if the bucket exists; create it if it doesn't
+minioClient.bucketExists(bucketName, (err, exists) => {
+  if (err) {
+    console.error('Error checking bucket existence:', err);
+    return;
+  }
+  if (!exists) {
+    minioClient.makeBucket(bucketName, 'us-east-1', (err) => {
+      if (err) {
+        console.error('Error creating bucket:', err);
+      } else {
+        console.log(`Bucket "${bucketName}" created successfully.`);
+      }
+    });
+  }
+});
+
+// Multer setup for handling file uploads
+const storage = multer.memoryStorage(); // Use memory storage for direct upload to MinIO
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|webp/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+
+    if (extname && mimetype) {
+      cb(null, true);
+    } else {
+      cb(new Error('Images only!'));
+    }
+  },
+});
+
+router.post('/', upload.single('image'), async (req, res) => {
+  const { title, description, link, active, order } = req.body;
+
+  if (!req.file) {
+    return res.status(400).json({ error: 'Image file is required' });
+  }
 
   try {
-    const newCarousel = await Carousel.create({
-      title,
-      description,
-      imageUrl,
-      link,
-      active,
-      order,
-    });
+    const fileName = `${Date.now()}-${req.file.originalname}`;
+    const metaData = {
+      'Content-Type': req.file.mimetype,
+    };
 
-    res.status(201).json(newCarousel);
+    // Upload image to MinIO
+    minioClient.putObject(bucketName, fileName, req.file.buffer, metaData, (err) => {
+      if (err) {
+        console.error('Error uploading file to MinIO:', err);
+        return res.status(500).json({ error: 'Failed to upload image' });
+      }
+
+      const imageUrl = `${minioClient.protocol}//${minioClient.host}:${minioClient.port}/${bucketName}/${fileName}`;
+
+      // Save carousel data to the database
+      Carousel.create({
+        title,
+        description,
+        imageUrl,
+        link,
+        active,
+        order,
+      })
+        .then((newCarousel) => {
+          res.status(201).json(newCarousel);
+        })
+        .catch((error) => {
+          console.error('Error saving carousel to database:', error);
+          res.status(500).json({ error: 'Failed to create carousel' });
+        });
+    });
   } catch (error) {
     console.error('Error creating carousel:', error);
     res.status(500).json({ error: 'Failed to create carousel' });
   }
 });
 
+// Other routes remain the same as before...
 // Get all active carousel items (sorted by order)
 router.get('/', async (req, res) => {
   try {

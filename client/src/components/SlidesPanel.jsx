@@ -11,7 +11,9 @@ import {
   Image,
   Loader,
   Container,
-  Title,Group
+  Title,
+  Group,
+  FileInput,
 } from '@mantine/core';
 import { FaEdit } from 'react-icons/fa';
 import { FiDelete } from 'react-icons/fi';
@@ -21,7 +23,7 @@ export default function SlidesPanel() {
   const [newSlide, setNewSlide] = useState({
     title: '',
     description: '',
-    imageUrl: '',
+    imageFile: null, // Updated to handle file input
     link: '',
     active: true,
     order: 0,
@@ -39,7 +41,7 @@ export default function SlidesPanel() {
   const fetchSlides = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('https://server.yesj.in/slides');
+      const response = await axios.get('http://localhost:5000/slides');
       setSlides(response.data);
     } catch (err) {
       console.error('Error fetching slides:', err);
@@ -59,15 +61,36 @@ export default function SlidesPanel() {
     }
   };
 
+  // Handle file input change
+  const handleFileChange = (file) => {
+    if (editingSlide) {
+      setEditingSlide({ ...editingSlide, imageFile: file });
+    } else {
+      setNewSlide({ ...newSlide, imageFile: file });
+    }
+  };
+
   // Add a new slide
   const addSlide = async () => {
+    const formData = new FormData();
+    formData.append('title', newSlide.title);
+    formData.append('description', newSlide.description);
+    formData.append('link', newSlide.link);
+    formData.append('active', newSlide.active);
+    formData.append('order', newSlide.order);
+    if (newSlide.imageFile) formData.append('image', newSlide.imageFile);
+
     try {
-      const response = await axios.post('https://server.yesj.in/slides', newSlide);
+      const response = await axios.post('http://localhost:5000/slides', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setSlides([...slides, response.data]);
       setNewSlide({
         title: '',
         description: '',
-        imageUrl: '',
+        imageFile: null,
         link: '',
         active: true,
         order: 0,
@@ -81,8 +104,20 @@ export default function SlidesPanel() {
 
   // Update a slide
   const updateSlide = async () => {
+    const formData = new FormData();
+    formData.append('title', editingSlide.title);
+    formData.append('description', editingSlide.description);
+    formData.append('link', editingSlide.link);
+    formData.append('active', editingSlide.active);
+    formData.append('order', editingSlide.order);
+    if (editingSlide.imageFile) formData.append('image', editingSlide.imageFile);
+
     try {
-      const response = await axios.put(`https://server.yesj.in/slides/${editingSlide._id}`, editingSlide);
+      const response = await axios.put(`http://localhost:5000/slides/${editingSlide._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setSlides(slides.map((slide) => (slide._id === editingSlide._id ? response.data : slide)));
       setEditingSlide(null);
       setModalOpen(false);
@@ -95,7 +130,7 @@ export default function SlidesPanel() {
   // Delete a slide
   const deleteSlide = async (id) => {
     try {
-      await axios.delete(`https://server.yesj.in/slides/${id}`);
+      await axios.delete(`http://localhost:5000/slides/${id}`);
       setSlides(slides.filter((slide) => slide._id !== id));
     } catch (err) {
       console.error('Error deleting slide:', err);
@@ -110,7 +145,7 @@ export default function SlidesPanel() {
       setNewSlide({
         title: '',
         description: '',
-        imageUrl: '',
+        imageFile: null,
         link: '',
         active: true,
         order: 0,
@@ -127,7 +162,7 @@ export default function SlidesPanel() {
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <Button  onClick={() => openModal()} className="mb-6">
+      <Button onClick={() => openModal()} className="mb-6">
         Add New Slide
       </Button>
 
@@ -135,48 +170,40 @@ export default function SlidesPanel() {
       {loading ? (
         <Loader />
       ) : (
-        <Table striped  highlightOnHover horizontalSpacing={'sm'} withTableBorder withRowBorders withColumnBorders>
-          <Table.Th>
-            <Table.Tr>
-              <Table.Th>Image</Table.Th>
-              <Table.Th>Title</Table.Th>
-              <Table.Th>Description</Table.Th>
-              <Table.Th>Order</Table.Th>
-              <Table.Th>Active</Table.Th>
-              <Table.Th>Actions</Table.Th>
-            </Table.Tr>
-          </Table.Th>
-          <Table.Tbody>
+        <Table striped highlightOnHover horizontalSpacing={'sm'} withTableBorder withRowBorders withColumnBorders>
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Order</th>
+              <th>Active</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
             {slides.map((slide) => (
-              <Table.Tr key={slide._id}>
-                <Table.Td width={400}>
-                 {slide.imageUrl}
-                </Table.Td>
-                <Table.Td>{slide.title}</Table.Td>
-                <Table.Td>{slide.description}</Table.Td>
-                <Table.Td>{slide.order}</Table.Td>
-                <Table.Td>{slide.active ? 'Yes' : 'No'}</Table.Td>
-                <Table.Td>
+              <tr key={slide._id}>
+                <td>
+                  <Image src={slide.imageUrl} alt={slide.title} width={100} height={60} fit="contain" />
+                </td>
+                <td>{slide.title}</td>
+                <td>{slide.description}</td>
+                <td>{slide.order}</td>
+                <td>{slide.active ? 'Yes' : 'No'}</td>
+                <td>
                   <Group spacing="xs">
-                    <ActionIcon
-                      color="blue"
-                      onClick={() => openModal(slide)}
-                      variant="light"
-                    >
-                     <FaEdit/>
+                    <ActionIcon color="blue" onClick={() => openModal(slide)} variant="light">
+                      <FaEdit />
                     </ActionIcon>
-                    <ActionIcon
-                      color="red"
-                      onClick={() => deleteSlide(slide._id)}
-                      variant="light"
-                    >
-                    <FiDelete/>
+                    <ActionIcon color="red" onClick={() => deleteSlide(slide._id)} variant="light">
+                      <FiDelete />
                     </ActionIcon>
                   </Group>
-                </Table.Td>
-              </Table.Tr>
+                </td>
+              </tr>
             ))}
-          </Table.Tbody>
+          </tbody>
         </Table>
       )}
 
@@ -206,13 +233,12 @@ export default function SlidesPanel() {
           onChange={handleInputChange}
           className="mb-4"
         />
-        <TextInput
-          label="Image URL"
-          name="imageUrl"
-          placeholder="Enter image URL"
-          value={editingSlide ? editingSlide.imageUrl : newSlide.imageUrl}
-          onChange={handleInputChange}
-          required
+        <FileInput
+          label="Upload Image"
+          placeholder="Choose an image"
+          accept="image/*"
+          onChange={handleFileChange}
+          required={!editingSlide}
           className="mb-4"
         />
         <TextInput
