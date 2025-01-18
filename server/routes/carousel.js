@@ -10,7 +10,7 @@ const router = express.Router();
 const minioClient = new Minio.Client({
   endPoint: 'storage.yesj.in', // e.g., 'localhost'
   port: 9000, // Default MinIO port
-  useSSL: true, // Set to true if SSL is enabled
+  useSSL: false , // Set to true if SSL is enabled
   accessKey: 'yesj',
   secretKey: 'amdgfeb@19',
 });
@@ -69,7 +69,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     minioClient.putObject(bucketName, fileName, req.file.buffer, metaData, (err) => {
       if (err) {
         console.error('Error uploading file to MinIO:', err);
-        return res.status(500).json({ error: 'Failed to upload image' });
+        return res.status(500).json({ err});
       }
 
       const imageUrl = `${minioClient.protocol}//${minioClient.host}:${minioClient.port}/${bucketName}/${fileName}`;
