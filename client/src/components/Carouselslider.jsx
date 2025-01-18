@@ -5,7 +5,7 @@ import { Image } from '@mantine/core';
 const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? 1000 : -1000,
-    opacity: 0
+    opacity: 0,
   }),
   center: {
     zIndex: 1,
@@ -15,8 +15,8 @@ const slideVariants = {
   exit: (direction) => ({
     zIndex: 0,
     x: direction < 0 ? 1000 : -1000,
-    opacity: 0
-  })
+    opacity: 0,
+  }),
 };
 
 const Carouselslider = () => {
@@ -37,9 +37,6 @@ const Carouselslider = () => {
           description: slide.description, // Optional description for the image
           link: slide.link, // Optional button/link
         }));
-
-        // Cache the slides in localStorage
-        localStorage.setItem('carouselSlides', JSON.stringify(formattedSlides));
         setSlides(formattedSlides);
       } catch (err) {
         console.error('Error fetching slides:', err);
@@ -49,20 +46,13 @@ const Carouselslider = () => {
       }
     };
 
-    // Try to load from localStorage first
-    const cachedSlides = localStorage.getItem('carouselSlides');
-    if (cachedSlides) {
-      setSlides(JSON.parse(cachedSlides));
-      setLoading(false);
-    } else {
-      fetchImages();
-    }
+    fetchImages();
   }, []);
 
   useEffect(() => {
     const autoplay = setInterval(() => {
       setCurrent(([prev]) => [(prev + 1) % slides.length, 1]);
-    }, 9000); // Change slide every 5 seconds
+    }, 9000); // Change slide every 9 seconds
 
     return () => clearInterval(autoplay);
   }, [slides]);
@@ -94,7 +84,7 @@ const Carouselslider = () => {
               custom={direction}
               transition={{
                 x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 }
+                opacity: { duration: 0.2 },
               }}
             >
               <div className="relative w-full h-full">
@@ -102,12 +92,10 @@ const Carouselslider = () => {
                   src={slide.image}
                   alt={slide.title}
                   loading="lazy" // Lazy loading of images
-                  className="w-full h-full object-cover "
+                  className="w-full h-full object-cover"
                 />
-                
-     
                 <div className="absolute right-2 bottom-1 flex flex-col justify-start items-start text-center text-white p-4 lg:p-10">
-                  <div className='bg-black rounded-lg bg-opacity-70'>
+                  <div className="bg-black rounded-lg bg-opacity-70">
                     <h2 className="text-2xl md:text-4xl font-bold p-3 text-white">{slide.title}</h2>
                   </div>
                   {slide.link && (
