@@ -10,7 +10,7 @@ const router = express.Router();
 const minioClient = new Minio.Client({
   endPoint: 'minio.yesj.in', // e.g., 'localhost'
   port: 9000, // Default MinIO port
-  useSSL: false, // Set to true if SSL is enabled
+  useSSL: true, // Set to true if SSL is enabled
   accessKey: 'yesj',
   secretKey: 'amdgfeb@19',
 });
