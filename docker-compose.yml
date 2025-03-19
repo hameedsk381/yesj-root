@@ -23,8 +23,3 @@ services:
       - .env  # Load environment variables from .env file
     environment:
       - MONGODB_URI  # Use the MONGODB_URI from the .env file
-
-networks:
-  default:
-    external:
-      name: web
