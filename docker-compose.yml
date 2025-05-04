@@ -1,10 +1,10 @@
-version: '3'
+# version: '3'  <-- can be safely removed (optional)
 services:
   client:
     build: ./client
     volumes:
       - ./client:/app
-      - /app/node_modules
+      - /app/node_modules  # Avoid mapping issues
     ports:
       - '3000:80'
     environment:
@@ -19,28 +19,10 @@ services:
       - /app/node_modules
     ports:
       - '5000:5000'
+    env_file:
+      - .env
     environment:
-      - MONGODB_URI=mongodb://mongo:27017/mydatabase  # Point directly to MongoDB
+      - MONGODB_URI
 
-  mongo:
-    image: mongo
-    ports:
-      - '27017:27017'
-    volumes:
-      - mongo_data:/data/db
-
-  mongo-express:
-    image: mongo-express
-    ports:
-      - '8081:8081'
-    environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_PORT=27017
-
-networks:
-  default:
-    external:
-      name: web
-
-volumes:
-  mongo_data:
+# Removed the external `web` network
+# Docker Compose will now auto-generate a default bridge network
