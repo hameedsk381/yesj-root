@@ -1,0 +1,75 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: password
+        options: >-
+          --health-cmd mongo
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependencies-path: |
+          client/package-lock.json
+          server/package-lock.json
+
+    - name: Install client dependencies
+      run: |
+        cd client
+        npm ci
+
+    - name: Install server dependencies
+      run: |
+        cd server
+        npm ci
+
+    - name: Run client linting
+      run: |
+        cd client
+        npm run lint
+
+    - name: Run server linting
+      run: |
+        cd server
+        npm run lint
+
+    - name: Run client tests
+      run: |
+        cd client
+        npm test
+
+    - name: Run server tests
+      run: |
+        cd server
+        npm test
+
+    - name: Build client
+      run: |
+        cd client
+        npm run build
