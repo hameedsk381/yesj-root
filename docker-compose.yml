@@ -1,31 +1,61 @@
-# version: '3'  <-- can be safely removed (optional)
+version: '3.8'
+
 services:
-  client:
-    build: ./client
-    volumes:
-      - ./client:/app
-      - /app/node_modules  # Avoid mapping issues
+  # MongoDB service
+  mongodb:
+    image: mongo:6.0
+    container_name: yesj_mongodb
+    restart: always
     ports:
-      - '3000:80'
-    env_file:
-      - ./.env
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+    networks:
+      - yesj_network
+
+  # Backend service
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: yesj_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/yesj?authSource=admin
     depends_on:
-      - server
-      - mongo
-
-  server:
-    build: ./server
+      - mongodb
     volumes:
-      - ./server:/app
-      - /app/node_modules
-    ports:
-      - '5000:5000'
-    env_file:
-      - .env
-    environment:
-      - MONGODB_URI
+      - ./server/uploads:/app/uploads
+    networks:
+      - yesj_network
 
-# Removed the external `web` network
-# Docker Compose will now auto-generate a default bridge network
+  # Frontend service
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: yesj_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - yesj_network
+
+# Volumes for data persistence
+volumes:
+  mongodb_data:
+    driver: local
+
+# Networks for service communication
+networks:
+  yesj_network:
+    driver: bridge

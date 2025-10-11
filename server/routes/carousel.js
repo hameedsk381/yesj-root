@@ -1,92 +1,83 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import Carousel from '../models/carousel.js';
+import Slide from '../models/carousel.js';
 
 const router = express.Router();
 
-// Create a new carousel item
-router.post('/', async (req, res) => {
-  const { title, description, imageUrl, link, active, order } = req.body;
+// Middleware for error handling
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
 
-  try {
-    const newCarousel = await Carousel.create({
-      title,
-      description,
-      imageUrl,
-      link,
-      active,
-      order,
-    });
+// Get all slides
+router.get(
+  '/',
+  asyncHandler(async (req, res) => {
+    const slides = await Slide.find();
+    res.status(200).json(slides);
+  })
+);
 
-    res.status(201).json(newCarousel);
-  } catch (error) {
-    console.error('Error creating carousel:', error);
-    res.status(500).json({ error: 'Failed to create carousel' });
-  }
-});
+// Get a slide by ID
+router.get(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const slide = await Slide.findById(id);
 
-// Get all active carousel items (sorted by order)
-router.get('/', async (req, res) => {
-  try {
-    const carousels = await Carousel.find({ active: true }).sort({ order: 1 });
-    res.status(200).json(carousels);
-  } catch (error) {
-    console.error('Error fetching carousels:', error);
-    res.status(500).json({ error: 'Failed to fetch carousels' });
-  }
-});
-
-// Get a specific carousel item by ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const carousel = await Carousel.findById(id);
-    if (!carousel) {
-      return res.status(404).json({ error: 'Carousel not found' });
+    if (!slide) {
+      return res.status(404).json({ error: 'Slide not found' });
     }
-    res.status(200).json(carousel);
-  } catch (error) {
-    console.error('Error fetching carousel by ID:', error);
-    res.status(500).json({ error: 'Failed to fetch carousel' });
-  }
-});
 
-// Update a carousel item by ID
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
+    res.status(200).json(slide);
+  })
+);
 
-  try {
-    const updatedCarousel = await Carousel.findByIdAndUpdate(id, req.body, {
+// Create a new slide
+router.post(
+  '/',
+  asyncHandler(async (req, res) => {
+    const slide = new Slide(req.body);
+    const savedSlide = await slide.save();
+    res.status(201).json(savedSlide);
+  })
+);
+
+// Update a slide by ID
+router.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const updatedSlide = await Slide.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!updatedCarousel) {
-      return res.status(404).json({ error: 'Carousel not found' });
+    if (!updatedSlide) {
+      return res.status(404).json({ error: 'Slide not found' });
     }
-    res.status(200).json(updatedCarousel);
-  } catch (error) {
-    console.error('Error updating carousel:', error);
-    res.status(500).json({ error: 'Failed to update carousel' });
-  }
-});
 
-// Delete a carousel item by ID
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+    res.status(200).json(updatedSlide);
+  })
+);
 
-  try {
-    const deletedCarousel = await Carousel.findByIdAndDelete(id);
+// Delete a slide by ID
+router.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const deletedSlide = await Slide.findByIdAndDelete(id);
 
-    if (!deletedCarousel) {
-      return res.status(404).json({ error: 'Carousel not found' });
+    if (!deletedSlide) {
+      return res.status(404).json({ error: 'Slide not found' });
     }
-    res.status(200).json({ message: 'Carousel deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting carousel:', error);
-    res.status(500).json({ error: 'Failed to delete carousel' });
-  }
+
+    res.status(200).json({ message: 'Slide deleted successfully' });
+  })
+);
+
+// Global error handler
+router.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
 export default router;

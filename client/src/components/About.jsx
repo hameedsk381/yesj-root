@@ -10,14 +10,23 @@ const management = [
   {
     name: 'Fr Bala Bollineni',
     title: 'Founder & Director',
-    image: managementTeam.johndoe, // Assume you have a johndoe.png image in the assets folder
+    image: managementTeam.johndoe,
   },
   {
     name: 'Pity parker',
     title: 'Programmes Cordinator',
-    image: managementTeam.janesmith, // Assume you have a janesmith.png image in the assets folder
+    image: managementTeam.janesmith,
   },
-  // Add more team members here...
+  {
+    name: 'Maniraju',
+    title: 'Programme Manager',
+    image: managementTeam.maniraju,
+  },
+  {
+    name: 'Vinay Kattula',
+    title: 'Editor',
+    image: managementTeam.vinay,
+  }
 ];
 
 const features = [

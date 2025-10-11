@@ -3,64 +3,81 @@ import Course from '../models/courses.js';
 
 const router = express.Router();
 
+// Middleware for error handling
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
+
 // Get all courses
-router.get('/', async (req, res) => {
-  try {
+router.get(
+  '/',
+  asyncHandler(async (req, res) => {
     const courses = await Course.find();
     res.status(200).json(courses);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 // Get a course by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const course = await Course.findById(req.params.id);
+router.get(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const course = await Course.findById(id);
+
     if (!course) {
-      return res.status(404).json({ message: 'Course not found' });
+      return res.status(404).json({ error: 'Course not found' });
     }
+
     res.status(200).json(course);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+  })
+);
 
 // Create a new course
-router.post('/', async (req, res) => {
-  try {
-    const newCourse = new Course(req.body);
-    const savedCourse = await newCourse.save();
+router.post(
+  '/',
+  asyncHandler(async (req, res) => {
+    const course = new Course(req.body);
+    const savedCourse = await course.save();
     res.status(201).json(savedCourse);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+  })
+);
 
 // Update a course by ID
-router.put('/:id', async (req, res) => {
-  try {
-    const updatedCourse = await Course.findByIdAndUpdate(req.params.id, req.body, { new: true });
+router.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const updatedCourse = await Course.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
     if (!updatedCourse) {
-      return res.status(404).json({ message: 'Course not found' });
+      return res.status(404).json({ error: 'Course not found' });
     }
+
     res.status(200).json(updatedCourse);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+  })
+);
 
 // Delete a course by ID
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedCourse = await Course.findByIdAndDelete(req.params.id);
+router.delete(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const deletedCourse = await Course.findByIdAndDelete(id);
+
     if (!deletedCourse) {
-      return res.status(404).json({ message: 'Course not found' });
+      return res.status(404).json({ error: 'Course not found' });
     }
+
     res.status(200).json({ message: 'Course deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  })
+);
+
+// Global error handler
+router.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
 export default router;

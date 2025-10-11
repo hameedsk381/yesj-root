@@ -179,7 +179,7 @@ const CourseRegistrationForm = () => {
           </Grid.Col>
         </Grid>
         
-        <Group position="right" mt="md">
+        <Group justify="flex-end" mt="md">
           <Button type="submit" m={'auto'} mt={10}>Submit</Button>
         </Group>
       </form>

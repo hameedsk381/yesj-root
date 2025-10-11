@@ -71,7 +71,7 @@ export function Contact() {
             mt="md"
             classNames={{ input: classes.input, label: classes.inputLabel }}
           />
-          <Group position="right" mt="md">
+          <Group justify="flex-end" mt="md">
             <Button className={classes.control}>Send message</Button>
           </Group>
         </Box>

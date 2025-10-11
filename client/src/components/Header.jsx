@@ -15,7 +15,6 @@ const tabs = [
   'Courses',
   'Events',
   'Contribute',
-  
 ];
 
 function Header() {

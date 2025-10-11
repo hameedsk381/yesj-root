@@ -1,131 +1,95 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Card, Image, Text, Button, Badge } from '@mantine/core';
+import { coursesService } from '../services';
 
 const Courses = () => {
-  const navigate = useNavigate();
-  const [coursesData, setCoursesData] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const data = await coursesService.getAll();
+        setCourses(data);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching courses:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCourses();
   }, []);
 
-  const fetchCourses = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('https://server.yesj.in/courses');
-      if (response.data && Array.isArray(response.data)) {
-        organizeCoursesByCategory(response.data);
-      } else {
-        setError('Invalid response format from server.');
-      }
-    } catch (err) {
-      console.error('Error fetching courses:', err);
-      setError('Error fetching courses. Please try again later.');
-    } finally {
-      setLoading(false);
+  // Function to determine the correct image source
+  const getImageSource = (imagePath) => {
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
     }
-  };
-
-  const organizeCoursesByCategory = (courses) => {
-    const organizedCourses = courses.reduce((acc, course) => {
-      const category = course.category || 'Uncategorized';
-      if (!acc[category]) {
-        acc[category] = [];
-      }
-      acc[category].push(course);
-      return acc;
-    }, {});
-
-    const categoriesArray = Object.keys(organizedCourses).map((category) => ({
-      category,
-      courses: organizedCourses[category],
-    }));
-
-    setCoursesData(categoriesArray);
-  };
-
-  const handleViewCourse = (courseId) => {
-    navigate(`/courses/${courseId}`);
+    // If it's a local path, prefix with the base URL
+    return imagePath;
   };
 
   if (loading) {
-    return <div className="container mx-auto p-12 text-center">Loading...</div>;
+    return (
+      <div className="container mx-auto p-8 flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="container mx-auto p-12 text-center text-red-500">{error}</div>;
+    return (
+      <div className="container mx-auto p-8">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Error: </strong>
+          <span className="block sm:inline">{error}</span>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="container mx-auto p-12">
-      {coursesData.map((categoryData) => (
-        <div key={categoryData.category} className="mb-6">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800">
-            {categoryData.category}
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {categoryData.courses.map((course) => (
-              <Card key={course._id} shadow="sm" padding="lg" radius="md" withBorder >
-                <Card.Section>
-                  <Image
-                    src={course.image || 'default-image.png'}
-                    alt={course.title || 'Course Image'}
-                    height={200} // Fixed height
-                    width="100%" // Full width
-                    style={{ objectFit: 'fill' ,maxHeight:180 }} // Maintain aspect ratio and fill space
-                  />
-                </Card.Section>
-
-                <Text weight={500} size="lg" mt="md">
-                  {course.title || 'No Title'}
-                </Text>
-
-                {/* Description limited to two lines */}
-                <Text
-                  size="sm"
-                  color="dimmed"
-                  mt="sm"
-                  style={{
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    WebkitLineClamp: 2,
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  {course.description || 'No Description'}
-                </Text>
-
-                <div className="mt-4">
-                  {course.badges?.map((badge, index) => (
-                    <Badge key={index} variant="outline" size="sm" color="blue" mr="xs">
-                      {badge}
-                    </Badge>
-                  ))}
-                </div>
-
-                <Text size="sm" color="gray" mt="md">
-                  Duration: {course.duration || 'N/A'}
-                </Text>
-
-                <Button
-                  variant="light"
-                  color="blue"
-                  fullWidth
-                  mt="md"
-                  onClick={() => handleViewCourse(course._id)}
-                >
-                  View Course
-                </Button>
-              </Card>
-            ))}
-          </div>
+    <div className="container mx-auto p-8">
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">Our Courses</h1>
+      {courses.length === 0 ? (
+        <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+          <h3 className="text-2xl font-semibold text-gray-700">No Courses Available</h3>
+          <p className="text-gray-600 mt-2">Check back later for new courses.</p>
         </div>
-      ))}
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course) => (
+            <div key={course._id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              <img 
+                src={getImageSource(course.image)} 
+                alt={course.title} 
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">{course.title}</h2>
+                <p className="text-gray-700 mb-4">{course.description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                    {course.category || 'General'}
+                  </span>
+                  <span className="text-gray-600 text-sm">
+                    Duration: {course.duration || 'Not specified'}
+                  </span>
+                </div>
+                {course.instructor && (
+                  <p className="mt-3 text-gray-600">
+                    <strong>Instructor:</strong> {course.instructor}
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

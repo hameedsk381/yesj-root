@@ -1,5 +1,5 @@
 import express from 'express';
-import Event from '../models/events.js'; // Ensure this path points to your Event model
+import Event from '../models/events.js';
 
 const router = express.Router();
 

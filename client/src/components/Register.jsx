@@ -81,7 +81,7 @@ function Register({onLoginClick}) {
             Register
           </Button>
 
-          <Text align="center" style={{ marginTop: 15 }}>
+          <Text ta="center" style={{ marginTop: 15 }}>
             Have an account?   <Anchor  fw={700} onClick={onLoginClick}>
             Register
           </Anchor>

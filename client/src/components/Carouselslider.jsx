@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Image } from '@mantine/core';
+import { carouselService } from '../services';
+
+// Default images if no slides are available from the API
+const defaultImages = [
+  { image: '/website/IMG_5986.JPG', alt: 'Default slide 1' },
+  { image: '/website/IMG_5999.JPG', alt: 'Default slide 2' },
+  { image: '/website/IMG_6787.JPG', alt: 'Default slide 3' }
+];
 
 const slideVariants = {
   enter: (direction) => ({
     x: direction > 0 ? 1000 : -1000,
-    opacity: 0,
+    opacity: 0
   }),
   center: {
     zIndex: 1,
@@ -15,58 +22,67 @@ const slideVariants = {
   exit: (direction) => ({
     zIndex: 0,
     x: direction < 0 ? 1000 : -1000,
-    opacity: 0,
-  }),
+    opacity: 0
+  })
 };
 
 const Carouselslider = () => {
   const [[current, direction], setCurrent] = useState([0, 0]);
-  const [slides, setSlides] = useState([]);
+  const [slides, setSlides] = useState(defaultImages);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchSlides = async () => {
       try {
-        setLoading(true);
-        const response = await fetch('https://server.yesj.in/slides'); // Replace with your API endpoint
-        const data = await response.json();
-        const formattedSlides = data.map((slide) => ({
-          image: slide.imageUrl, // Ensure your API provides an image URL
-          title: slide.title, // Title to display on the image
-          description: slide.description, // Optional description for the image
-          link: slide.link, // Optional button/link
-        }));
-        setSlides(formattedSlides);
-      } catch (err) {
-        console.error('Error fetching slides:', err);
-        setError('Failed to load slides.');
+        const data = await carouselService.getAll();
+        if (data && data.length > 0) {
+          // Map the API response to the format expected by the component
+          const formattedSlides = data.map(slide => ({
+            image: slide.image || slide.imageUrl,
+            alt: slide.alt || slide.title || 'Carousel slide'
+          }));
+          setSlides(formattedSlides);
+        }
+      } catch (error) {
+        console.error('Error fetching carousel slides:', error);
+        // Use default images if API call fails
+        setSlides(defaultImages);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchImages();
+    fetchSlides();
   }, []);
 
   useEffect(() => {
     const autoplay = setInterval(() => {
       setCurrent(([prev]) => [(prev + 1) % slides.length, 1]);
-    }, 9000); // Change slide every 9 seconds
+    }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(autoplay);
-  }, [slides]);
+  }, [slides.length]);
 
   const paginate = (newDirection) => {
     setCurrent([current + newDirection, newDirection]);
   };
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-full">Loading...</div>;
-  }
+  // Function to determine the correct image source
+  const getImageSource = (imagePath) => {
+    // If it's already a full URL, return as is
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // If it's a local path, prefix with the base URL
+    return imagePath;
+  };
 
-  if (error) {
-    return <div className="flex justify-center items-center h-full text-red-500">{error}</div>;
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-200">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   return (
@@ -84,32 +100,14 @@ const Carouselslider = () => {
               custom={direction}
               transition={{
                 x: { type: 'spring', stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
+                opacity: { duration: 0.2 }
               }}
             >
-              <div className="relative w-full h-full">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  loading="lazy" // Lazy loading of images
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute right-2 bottom-1 flex flex-col justify-start items-start text-center text-white p-4 lg:p-10">
-                  <div className="bg-red-600 rounded-lg bg-opacity-60">
-                    <h4 className="text-xl md:text-2xl font-bold p-3 text-white">{slide.title}</h4>
-                  </div>
-                  {slide.link && (
-                    <a
-                      href={slide.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded shadow"
-                    >
-                      Learn More
-                    </a>
-                  )}
-                </div>
-              </div>
+              <img
+                src={getImageSource(slide.image)}
+                alt={slide.alt}
+                className="w-full h-full object-fill"
+              />
             </motion.div>
           )
         ))}
@@ -125,6 +123,6 @@ const Carouselslider = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Carouselslider;

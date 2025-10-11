@@ -1,90 +1,143 @@
 import { IconArrowForward } from '@tabler/icons-react';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { announcementsService } from '../services';
 
 const VerticalScrollingAnnouncement = () => {
   const [announcements, setAnnouncements] = useState([]);
-  const scrollingRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Mock data for when no announcements are available
+  const mockAnnouncements = [
+    {
+      id: 1,
+      text: "Welcome to our platform! Check out our latest features.",
+      link: "#",
+      isNew: true
+    },
+    {
+      id: 2,
+      text: "New updates coming soon. Stay tuned for exciting changes!",
+      link: "#",
+      isNew: false
+    },
+    {
+      id: 3,
+      text: "Join our community events this weekend. Don't miss out!",
+      link: "#",
+      isNew: true
+    }
+  ];
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const response = await fetch('https://server.yesj.in/announcements'); // Updated to match the API endpoint
-        const data = await response.json();
-        setAnnouncements(data.map(announcement => ({
-          ...announcement,
-          isNew: new Date(announcement.date) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Mark as new if within the last week
-        })));
+        setIsLoading(true);
+        setError(null);
+        const data = await announcementsService.getAll();
+        setAnnouncements(data.length > 0 ? data : mockAnnouncements);
       } catch (error) {
         console.error('Error fetching announcements:', error);
+        // Use mock data when API call fails
+        setAnnouncements(mockAnnouncements);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchAnnouncements();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="w-full h-32 flex items-center justify-center bg-gray-100">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+      </div>
+    );
+  }
 
+  const AnnouncementCard = ({ announcement, index }) => (
+    <div className="text-center px-4">
+      <div className="border border-gray-200 p-4 rounded-lg bg-white shadow-md hover:shadow-lg transition-shadow duration-300 relative">
+        {announcement.isNew && (
+          <span className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
+            New
+          </span>
+        )}
+        <p className="text-gray-800 mb-3 font-medium">{announcement.text}</p>
+        <a
+          href={announcement.link}
+          className="inline-flex items-center text-red-600 hover:text-red-700 transition-colors duration-200"
+        >
+          Read More
+          <IconArrowForward className="ml-1 h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="relative w-full h-full bg-red-500 md:bg-transparent overflow-hidden">
-      {/* <div className="absolute top-0 w-full bg-white text-black py-4 text-center text-xl font-bold shadow-lg z-10">
-        Announcements
-      </div> */}
+    <div className="relative w-full h-full bg-gray-50 overflow-hidden">
+      <div className="pt-12 h-full overflow-auto relative">
+        {/* Desktop View */}
+        <div className="hidden md:block">
+          <div className="absolute top-0 w-full h-full animate-verticalScroll flex-col space-y-6">
+            {announcements.map((announcement, index) => (
+              <AnnouncementCard key={announcement._id || announcement.id || index} announcement={announcement} index={index} />
+            ))}
+          </div>
+          <div className="absolute top-[120%] w-full h-full animate-verticalScroll flex-col space-y-6">
+            {announcements.map((announcement, index) => (
+              <AnnouncementCard key={`dup-${announcement._id || announcement.id || index}`} announcement={announcement} index={index} />
+            ))}
+          </div>
+        </div>
 
-      {/* Padding to ensure title does not overlap with scrolling content */}
-      <div className="pt-12 h-full overflow-auto relative" >
-
-        {/* Vertical scrolling for desktop */}
-        <div className="hidden md:flex absolute top-0 w-full h-full flex-col space-y-4">
-          <div className='  w-full'>
-         <h1 className='font-extrabold text-center text-2xl text-gray-800  py-2 '>Announcements</h1>
-         </div>
-          {announcements.map((announcement, index) => (
-            <div key={index} className="text-center px-4">
-              <div className="border border-gray-300 p-4 rounded-md bg-red-600 bg-opacity-80 relative">
-                {announcement.isNew && (
-                  <span className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                    New
-                  </span>
-                )}
-                <p className="text-white mb-2">{announcement.title}</p>
-                <p className="text-white mb-2"> {announcement.description}</p>
-                <a
-                  href={`announcement/${announcement._id}`} // Assuming the first link is the main one
-                  className="text-yellow-300 hover:underline"
-                >
-                  Read More
-                </a>
+        {/* Mobile View */}
+        <div className="md:hidden">
+          <div className="absolute top-0 w-full h-full animate-verticalScroll flex-col space-y-6">
+            {announcements.map((announcement, index) => (
+              <div key={announcement._id || announcement.id || index} className="text-center px-4 py-2">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  {announcement.isNew && (
+                    <span className="inline-block bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full mb-2">
+                      New
+                    </span>
+                  )}
+                  <p className="text-gray-800 mb-2">{announcement.text}</p>
+                  <a
+                    href={announcement.link}
+                    className="inline-flex items-center text-red-600 hover:text-red-700"
+                  >
+                    Read More
+                    <IconArrowForward className="ml-1 h-4 w-4" />
+                  </a>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="absolute top-[120%] w-full h-full animate-verticalScroll flex-col space-y-6">
+            {announcements.map((announcement, index) => (
+              <div key={`dup-${announcement._id || announcement.id || index}`} className="text-center px-4 py-2">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  {announcement.isNew && (
+                    <span className="inline-block bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full mb-2">
+                      New
+                    </span>
+                  )}
+                  <p className="text-gray-800 mb-2">{announcement.text}</p>
+                  <a
+                    href={announcement.link}
+                    className="inline-flex items-center text-red-600 hover:text-red-700"
+                  >
+                    Read More
+                    <IconArrowForward className="ml-1 h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        
-
-        <div className="md:hidden  absolute top-0 w-screen h-full flex flex-col space-y-12 overflow-auto">
-         <div className='bg-gray-100  w-full'>
-         <h1 className='font-extrabold text-center text-2xl  py-2 '>Announcements</h1>
-         </div>
-          {announcements.map((announcement, index) => (
-            <div key={index} className="text-center px-4 py-2 relative">
-              {announcement.isNew && (
-                <span className="absolute top-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                  New
-                </span>
-              )}
-              <p className="text-white mb-2">{announcement.title}</p>
-              <p className="text-white mb-2"> {announcement.description}</p>
-              <a
-                href={`announcement/${announcement._id}`} // Assuming the first link is the main one
-                className="text-yellow-300 hover:underline"
-              >
-                Read More
-              </a>
-            </div>
-          ))}
-          
-        </div>
-      
       </div>
     </div>
   );

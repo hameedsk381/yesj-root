@@ -1,19 +1,21 @@
-# Use Node.js image
-FROM node:18
+FROM node:18-alpine
 
-# Set the working directory
 WORKDIR /app
 
-# Install dependencies
+# Copy package files
 COPY package*.json ./
-RUN npm install
 
-# Copy the rest of the code
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy source code
 COPY . .
 
+# Create uploads directory
+RUN mkdir -p uploads
 
-# Expose the port the app runs on
+# Expose port
 EXPOSE 5000
 
-# Start the server with nodemon for hot-reloading
-CMD ["node", "index.js","--watch"]
+# Start the application
+CMD ["npm", "start"]

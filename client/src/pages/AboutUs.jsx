@@ -1,7 +1,6 @@
 import React from 'react'
 import About from '../components/About'
 import bannerProgrammes from "../assets/banner-programmes.jpg"
-import ExampleWrapper from '../components/modal-1'
 
 const AboutUs = () => {
   return (
