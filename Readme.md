@@ -44,9 +44,18 @@ To get a local copy up and running, follow these steps:
    ```
 
 3. **Set up environment variables**:
-   Create a `.env` file in the root directory and add your MongoDB URI:
-   ```
-   MONGODB_URI=your_mongodb_uri
+   
+   For detailed information about environment variable setup, please refer to [ENVIRONMENT.md](ENVIRONMENT.md).
+   
+   Quick setup:
+   ```bash
+   # Client environment
+   cp client/.env.example client/.env
+   
+   # Server environment
+   cp server/.env.example server/.env
+   
+   # Modify the values as needed for your local setup
    ```
 
 4. **Run the application using Docker Compose**:

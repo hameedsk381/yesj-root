@@ -13,8 +13,12 @@ yarn-error.log*
 
 # Environment variables
 .env
-client/.env
-server/.env
+.env.local
+.env.*.local
+
+# But commit example files
+!.env.example
+!.env.*.example
 # Docker volumes
 volumes
 

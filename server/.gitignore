@@ -1,0 +1,21 @@
+node_modules
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# But commit example files
+!.env.example
+!.env.*.example
+
+# Log files
+*.log
+
+# Uploads directory (you might want to commit this depending on your needs)
+uploads/*
+!uploads/.gitkeep
+
+# Build directories
+dist
+build
