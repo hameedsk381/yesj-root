@@ -21,7 +21,7 @@ The project consists of three main services:
 To deploy the application in production mode:
 
 ```bash
-docker-compose up -d
+docker-compose -f docker-compose.staging.yml up -d
 ```
 
 This will:
@@ -45,6 +45,21 @@ This will:
 - Serve the frontend on port 3000
 - Expose MongoDB on port 27017 for direct access
 
+### Simple Deployment (using only docker-compose.yml)
+
+To deploy the application using only the base configuration (suitable for simple staging environments):
+
+```bash
+docker-compose up -d
+```
+
+This will:
+- Build and start all services
+- Use production-ready configurations
+- Serve the frontend on port 80
+- Serve the backend API on port 5000
+- Persist MongoDB data in a Docker volume
+
 ## Environment Variables
 
 The following environment variables can be configured:
@@ -62,9 +77,11 @@ The following environment variables can be configured:
 
 After deployment, the services will be available at:
 
-- **Frontend**: http://localhost (or http://localhost:3000 for development)
+- **Frontend**: http://localhost
 - **Backend API**: http://localhost:5000
 - **MongoDB**: mongodb://admin:password@localhost:27017/yesj
+
+For development deployment, the frontend will be available at http://localhost:3000
 
 ## Useful Commands
 
@@ -116,6 +133,8 @@ docker run --rm -v yesj_mongodb_data:/data/db -v $(pwd):/backup alpine tar xzf /
 2. **Permission issues**: Ensure Docker has the necessary permissions to access the project directories
 
 3. **Build failures**: Make sure all dependencies are correctly specified in package.json files
+
+4. **Multiple ports exposed**: When using docker-compose.override.yml, both development (3000) and production (80) ports may be exposed. Use docker-compose.staging.yml for clean production deployments.
 
 ### Logs
 

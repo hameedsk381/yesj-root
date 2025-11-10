@@ -16,16 +16,19 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:18-alpine
+
+# Copy package files for production dependencies
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm ci --only=production
 
 # Copy built files from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder /app/dist ./dist
 
 # Expose port
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Serve the application
+CMD ["npm", "run", "serve"]

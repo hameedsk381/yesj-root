@@ -28,9 +28,9 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
-    volumes:
-      - ./client:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=development
     command: npm run dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules

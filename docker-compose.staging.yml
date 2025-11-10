@@ -32,7 +32,6 @@ services:
     volumes:
       - ./server/uploads:/app/uploads
 
-
   # Frontend service
   frontend:
     build:
@@ -45,9 +44,7 @@ services:
     depends_on:
       - backend
 
-
 # Volumes for data persistence
 volumes:
   mongodb_data:
     driver: local
-
