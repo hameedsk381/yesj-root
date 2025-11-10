@@ -33,8 +33,7 @@ services:
       - mongodb
     volumes:
       - ./server/uploads:/app/uploads
-    networks:
-      - yesj_network
+
 
   # Frontend service
   frontend:
@@ -47,15 +46,10 @@ services:
       - "8080:8080"
     depends_on:
       - backend
-    networks:
-      - yesj_network
+
 
 # Volumes for data persistence
 volumes:
   mongodb_data:
     driver: local
 
-# Networks for service communication
-networks:
-  yesj_network:
-    driver: bridge
